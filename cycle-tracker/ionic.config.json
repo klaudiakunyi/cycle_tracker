@@ -1,0 +1,7 @@
+{
+  "name": "cycle-tracker",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
