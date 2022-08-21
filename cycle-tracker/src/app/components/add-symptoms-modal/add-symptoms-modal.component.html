@@ -1,0 +1,80 @@
+<ion-content class="ion-padding">
+
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button color="medium" (click)="cancel()">Mégse</ion-button>
+    </ion-buttons>
+    <ion-title>Tünet hozzáadása</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="confirm()">Mentés</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-grid>
+    <ion-row class="ion-justify-content-center ion-padding">
+      <ion-datetime id="datetime-picker"
+      presentation="date"
+      value="2022-04-21"
+      (ionChange)="onDateChange($event)">
+      </ion-datetime>
+    </ion-row>
+    
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>Dátum: {{ selectedDate }}</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-item>
+          <ion-label>
+            Vérzés:
+            <ion-segment (ionChange)="bloodSegmentChanged($event)">
+              <ion-segment-button value="light">
+                <ion-label>Gyenge</ion-label>
+              </ion-segment-button>
+              <ion-segment-button value="medium">
+                <ion-label>Közepes</ion-label>
+              </ion-segment-button>
+              <ion-segment-button value="heavy">
+                <ion-label>Erős</ion-label>
+              </ion-segment-button>
+            </ion-segment>
+          </ion-label>
+        </ion-item>
+        <ion-item>
+          <ion-label>
+            Méhnyaknyák:
+            <ion-segment (ionChange)="mucusSegmentChanged($event)" scrollable="true">
+              <ion-segment-button value="dry">
+                <ion-label>Száraz</ion-label>
+              </ion-segment-button>
+              <ion-segment-button value="wet">
+                <ion-label>Nyirkos</ion-label>
+              </ion-segment-button>
+              <ion-segment-button value="slimy">
+                <ion-label>Ragacsos</ion-label>
+              </ion-segment-button>
+              <ion-segment-button value="transparent">
+                <ion-label>Átlátszó</ion-label>
+              </ion-segment-button>
+            </ion-segment>
+          </ion-label>
+        </ion-item>
+        <ion-item>
+          <ion-label>
+            Kedv
+            <ion-list>
+              <ion-item *ngFor="let mood of moods">
+                <ion-label>{{mood.val}}</ion-label>
+                <ion-checkbox (ionChange)="OnMoodChange($event)" slot="end" [(ngModel)]="mood.isChecked"></ion-checkbox>
+              </ion-item>
+            </ion-list>
+          </ion-label>
+        </ion-item>
+      </ion-card-content>
+    </ion-card>   
+  </ion-grid>
+</ion-content>
