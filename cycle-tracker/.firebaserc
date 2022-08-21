@@ -1,0 +1,14 @@
+{
+  "targets": {
+    "cycle-tracker-be": {
+      "hosting": {
+        "app": [
+          "cycle-tracker-be"
+        ]
+      }
+    }
+  },
+  "projects": {
+    "default": "cycle-tracker-be"
+  }
+}
