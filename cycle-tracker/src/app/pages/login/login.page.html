@@ -1,0 +1,17 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>login</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-item>
+    <ion-label>Felhasználónév</ion-label>
+    <ion-input [(ngModel)]="userName"></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-label>Jelszó</ion-label>
+    <ion-input [(ngModel)]="password"></ion-input>
+  </ion-item>
+  <ion-button (click)="logIn()">Bejelentkezés</ion-button>
+</ion-content>
