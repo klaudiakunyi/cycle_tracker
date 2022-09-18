@@ -1,17 +1,20 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>login</ion-title>
+    <ion-title>Bejelentkezés</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
+<ion-content class="ion-align-items-center">
   <ion-item>
-    <ion-label>Felhasználónév</ion-label>
-    <ion-input [(ngModel)]="userName"></ion-input>
+    <ion-label>E-mail cím</ion-label>
+    <ion-input type="email" [formControl]="email"></ion-input>
   </ion-item>
   <ion-item>
     <ion-label>Jelszó</ion-label>
-    <ion-input [(ngModel)]="password"></ion-input>
+    <ion-input type="password" [formControl]="password"></ion-input>
   </ion-item>
-  <ion-button (click)="logIn()">Bejelentkezés</ion-button>
+  <div class="ion-text-center">
+    <ion-button (click)="logIn()">Bejelentkezés</ion-button>
+    <ion-button routerLink="/signup">Regisztráció</ion-button>
+  </div>
 </ion-content>

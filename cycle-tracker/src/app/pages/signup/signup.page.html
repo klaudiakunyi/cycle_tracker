@@ -1,0 +1,30 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Regisztráció</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-align-items-center">
+  <form [formGroup]="signUpForm" (ngSubmit)="onSubmit()">
+    <ion-item>
+      <ion-label>E-mail cím</ion-label>
+      <ion-input type="email" formControlName="email"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label>Jelszó</ion-label>
+      <ion-input type="password" formControlName="password"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label>Jelszó újra</ion-label>
+      <ion-input type="password" formControlName="rePassword"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label>Név</ion-label>
+      <ion-input type="test" formControlName="name"></ion-input>
+    </ion-item>
+    <div class="ion-text-center">
+      <ion-button type="submit">Regisztráció</ion-button>
+      <ion-button routerLink="/login">Bejelentkezés</ion-button>
+    </div>
+  </form>
+</ion-content>

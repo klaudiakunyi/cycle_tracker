@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { FormControl } from '@angular/forms';
 import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
@@ -8,17 +9,21 @@ import { AuthService } from 'src/app/services/auth.service';
 })
 export class LoginPage implements OnInit {
 
-  userName = '';
-  password = '';
-  constructor(private authService: AuthService) { }
+  email = new FormControl('');
+  password = new FormControl('');
+  constructor(private authService: AuthService, ) { }
 
   ngOnInit() {
   }
 
   logIn(){
-    this.authService.login(this.userName, this.password).then(cred =>{
+    this.authService.login(this.email.value, this.password.value).then(cred =>{
       console.log(cred);
+      
+    }).catch(error => {
+      console.error(error);
     });
   }
 
 }
+ 

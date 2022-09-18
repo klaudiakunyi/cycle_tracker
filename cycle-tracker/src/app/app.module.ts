@@ -14,7 +14,6 @@ import { provideStorage,getStorage } from '@angular/fire/storage';
 import { AngularFireModule } from '@angular/fire/compat'
 import { AddSymptomsModalComponent } from './components/add-symptoms-modal/add-symptoms-modal.component';
 import { FormsModule } from '@angular/forms';
-
 @NgModule({
   declarations: [AppComponent, AddSymptomsModalComponent],
   imports: [BrowserModule, 
@@ -25,7 +24,8 @@ import { FormsModule } from '@angular/forms';
     provideAuth(() => getAuth()), 
     provideFirestore(() => getFirestore()), 
     provideStorage(() => getStorage()),
-    FormsModule],
+    FormsModule
+    ],
   providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
   bootstrap: [AppComponent],
 })

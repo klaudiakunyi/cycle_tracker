@@ -38,7 +38,7 @@ export class CalendarPage implements OnInit {
   ngOnInit() {
     this.selectedSymptoms = this.dummySymptoms[this.selectedDate];
   }
-
+  
   onDateChange($event){
     let ertek = $event.detail.value.split("T")[0]
     console.log(ertek);

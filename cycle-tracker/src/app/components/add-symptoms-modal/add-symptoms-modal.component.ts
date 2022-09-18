@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
+import { DateTime } from 'luxon';
+import { Symptom } from 'src/app/interfaces/symptom';
 
 @Component({
   selector: 'app-add-symptoms-modal',
@@ -26,7 +28,7 @@ export class AddSymptomsModalComponent implements OnInit {
   selectedSymptoms = {};
   selectesMoods = []; 
 
-  dummySymptoms = {};
+  dummySymptoms: Symptom = { userId: "testUser", date: DateTime.now()};
 
 
   public moods = [
