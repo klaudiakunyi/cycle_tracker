@@ -2,9 +2,9 @@ import { DateTime } from "luxon";
 
 export interface Symptom{
     userId: string,
-    date: DateTime,
+    date: string,
     temperature?: number,
-    mood?: string,
+    mood?: string[],
     blood?: string,
     pain?: string,
     cervicalMucus?: string,
