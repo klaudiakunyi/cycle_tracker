@@ -16,13 +16,16 @@
 
   <ion-grid>
     <ion-row class="ion-justify-content-center ion-padding">
-      <ion-datetime id="datetime-picker"
+      <!-- <ion-datetime id="datetime-picker"
       presentation="date"
       value="2022-04-21"
       (ionChange)="onDateChange($event)">
-      </ion-datetime>
+      </ion-datetime> -->
+      
     </ion-row>
     
+    <mat-calendar firstdayofweek="1" [dateClass]="dateClass" [(selected)]="selected" #picker></mat-calendar>
+
     <ion-card>
       <ion-card-header>
         <ion-card-title>Dátum: {{ selectedDate }}</ion-card-title>

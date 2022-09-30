@@ -1,0 +1,41 @@
+button.example-custom-date-class {
+    background: orange;
+    border-radius: 100%;
+  }
+
+button.red{
+  background: rgb(248, 175, 205);
+  border-radius: 100%;
+}
+
+button.blue{
+  background: rgb(153, 193, 247);
+  border-radius: 100%;
+}
+
+button.symptom-log{
+  outline-color: rgb(73, 73, 73);
+  outline-width: 3px;
+  outline-style: solid;
+  outline-offset: -3px;
+  //background: rgb(202, 202, 202);
+  border-radius: 100%;
+}
+
+button.red-symptom-log{
+  outline-color: rgb(73, 73, 73);
+  outline-width: 3px;
+  outline-style: solid;
+  outline-offset: -3px;
+  background: rgb(248, 175, 205);
+  border-radius: 100%;
+}
+
+button.blue-symptom-log{
+  outline-color: rgb(73, 73, 73);
+  outline-width: 3px;
+  outline-style: solid;
+  outline-offset: -3px;
+  background: rgb(153, 193, 247);
+  border-radius: 100%;
+}
