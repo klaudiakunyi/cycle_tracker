@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { FormControl, Validators } from '@angular/forms';
+import { EMPTY, observable, Observable } from 'rxjs';
 import { AuthService } from 'src/app/services/auth.service';
+import { of } from 'rxjs';
+import { AlertController } from '@ionic/angular';
 
 @Component({
   selector: 'app-login',
@@ -9,9 +12,10 @@ import { AuthService } from 'src/app/services/auth.service';
 })
 export class LoginPage implements OnInit {
 
-  email = new FormControl('');
-  password = new FormControl('');
-  constructor(private authService: AuthService, ) { }
+  email = new FormControl('', Validators.required);
+  password = new FormControl('', Validators.required);
+
+  constructor(private authService: AuthService, private alertController: AlertController) { }
 
   ngOnInit() {
   }
@@ -21,8 +25,20 @@ export class LoginPage implements OnInit {
       console.log(cred);
       
     }).catch(error => {
-      console.error(error);
+      //console.error(error);
+      this.presentAlert('Sikertelen bejelentkezés');
+      return EMPTY;
     });
+  }
+
+  async presentAlert(message: string) {
+    const alert = await this.alertController.create({
+      header: 'Figyelmeztetés',
+      message: message,
+      buttons: ['OK'],
+    });
+
+    await alert.present();
   }
 
 }

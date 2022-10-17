@@ -6,12 +6,14 @@
 
 <ion-content class="ion-align-items-center">
   <ion-item>
-    <ion-label>E-mail cím</ion-label>
+    <ion-label position="floating">E-mail cím</ion-label>
     <ion-input type="email" [formControl]="email"></ion-input>
+    <ion-note slot="error">Kötelező mező.</ion-note>
   </ion-item>
   <ion-item>
-    <ion-label>Jelszó</ion-label>
+    <ion-label position="floating">Jelszó</ion-label>
     <ion-input type="password" [formControl]="password"></ion-input>
+    <ion-note slot="error">Kötelező mező.</ion-note>
   </ion-item>
   <div class="ion-text-center">
     <ion-button (click)="logIn()">Bejelentkezés</ion-button>
