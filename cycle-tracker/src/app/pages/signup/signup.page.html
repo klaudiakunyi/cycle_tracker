@@ -1,5 +1,9 @@
 <ion-header>
   <ion-toolbar>
+    <ion-buttons slot="start">
+      <!-- <ion-button color="medium" (click)="cancel()">Mégse</ion-button> -->
+      <ion-button (click)="goBack()">Vissza</ion-button>
+    </ion-buttons>
     <ion-title>Regisztráció</ion-title>
   </ion-toolbar>
 </ion-header>
@@ -7,24 +11,53 @@
 <ion-content class="ion-align-items-center">
   <form [formGroup]="signUpForm" (ngSubmit)="onSubmit()">
     <ion-item>
-      <ion-label>E-mail cím</ion-label>
-      <ion-input type="email" formControlName="email"></ion-input>
+      <ion-label position="floating">Név</ion-label>
+      <ion-input type="text" formControlName="name" maxlength="50"></ion-input>
+      <ion-note slot="error">A névnek legalább 1 karakter hosszúnak kell lennie.</ion-note>
     </ion-item>
     <ion-item>
-      <ion-label>Jelszó</ion-label>
-      <ion-input type="password" formControlName="password"></ion-input>
+      <ion-label position="floating">E-mail cím</ion-label>
+      <ion-input  type="email" formControlName="email" maxlength="40"></ion-input>
+      <!-- <ion-note slot="helper">Enter a valid email</ion-note> -->
+      <ion-note slot="error">Invalid e-mail cím</ion-note>
     </ion-item>
     <ion-item>
-      <ion-label>Jelszó újra</ion-label>
-      <ion-input type="password" formControlName="rePassword"></ion-input>
+      <ion-label position="floating">Jelszó</ion-label>
+      <ion-input type="password" formControlName="password" minlength="6" maxlength="40"></ion-input>
+      <ion-note slot="error">A jelszónak legalább 6 karakter hosszúnak kell lennie.</ion-note>
     </ion-item>
     <ion-item>
-      <ion-label>Név</ion-label>
-      <ion-input type="test" formControlName="name"></ion-input>
+      <ion-label position="floating">Jelszó újra</ion-label>
+      <ion-input required="true" type="password" formControlName="rePassword" maxlength="40"></ion-input>
+    </ion-item>
+    <ion-item>
+    <ion-label>Születési dátum</ion-label>
+    <ion-datetime-button datetime="datetime"></ion-datetime-button>
+
+    <ion-modal [keepContentsMounted]="true">
+      <ng-template>
+        <ion-datetime 
+          [showDefaultButtons]="true"
+          doneText="Beállítás"
+          cancelText="Mégse"
+          [preferWheel]="true" 
+          presentation="date" 
+          id="datetime"
+          value="2022-04-21"
+          max="2022-10-31T23:59:59"
+          (ionChange)="onDateChange($event)">
+        </ion-datetime>
+      </ng-template>
+    </ion-modal>
+    </ion-item>
+    <ion-item>
+      <ion-label position="floating">Súly</ion-label>
+      <ion-input required="false" type="number" formControlName="weight" maxlength="40"></ion-input>
     </ion-item>
     <div class="ion-text-center">
       <ion-button type="submit">Regisztráció</ion-button>
       <ion-button routerLink="/login">Bejelentkezés</ion-button>
+      <!-- <ion-button (click)="goBack()">Vissza</ion-button> -->
     </div>
   </form>
 </ion-content>

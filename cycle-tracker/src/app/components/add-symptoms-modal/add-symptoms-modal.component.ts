@@ -60,10 +60,10 @@ export class AddSymptomsModalComponent implements OnInit {
   }
 
   selectedDate = "2022-08-10";
-  selectedSymptoms: Symptom = { userId: "testUser", date: DateTime.now().toString() };
+  selectedSymptoms: Symptom = {id: "", userId: "testUser", date: DateTime.now().toString() };
   selectedMoods = []; 
 
-  dummySymptoms: Symptom = { userId: "testUser", date: DateTime.now().toString()};
+  dummySymptoms: Symptom = { id: "", userId: "testUser", date: DateTime.now().toString()};
 
 
   public moods = [

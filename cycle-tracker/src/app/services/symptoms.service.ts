@@ -12,7 +12,8 @@ export class SymptomsService {
   constructor(private afs: AngularFirestore) { }
 
   addSymptoms(symptoms: Symptom){
-    this.afs.collection<Symptom>(this.collectionName).add(symptoms);
+    symptoms.id = this.afs.createId();
+    this.afs.collection<Symptom>(this.collectionName).doc(symptoms.id).set(symptoms);
   }
 
   updateSymptoms(symptoms: Symptom){
