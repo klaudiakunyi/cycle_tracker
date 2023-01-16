@@ -14,13 +14,6 @@ export class SymptomsService {
   constructor(private afs: AngularFirestore) { }
 
   addSymptoms(symptoms: Symptom){
-
-    //id from userid + '_' + datetime.now
-    //symptoms.id = this.afs.createId() + '_' + DateTime.now();
-    this.afs.collection<Symptom>(this.collectionName).doc(symptoms.id).set(symptoms);
-  }
-
-  updateSymptoms(symptoms: Symptom){
     this.afs.collection<Symptom>(this.collectionName).doc(symptoms.id).set(symptoms);
   }
 
@@ -29,7 +22,7 @@ export class SymptomsService {
   }
 
   getSymptomsById(id: string){
-    return this.afs.collection<Symptom>(this.collectionName, ref => ref.where('id', '==', id)).snapshotChanges();
+    return this.afs.collection<Symptom>(this.collectionName).doc(id).valueChanges();
   }
 
   deleteSymptoms(id: string){

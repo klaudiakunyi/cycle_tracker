@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
-import { MatCalendarCellClassFunction } from '@angular/material/datepicker';
+import { MatCalendarCellClassFunction, MatDatepickerInputEvent } from '@angular/material/datepicker';
 import { ModalController } from '@ionic/angular';
 import { DateTime } from 'luxon';
 import { Symptom } from 'src/app/interfaces/symptom';
@@ -13,15 +13,29 @@ import { AuthService } from 'src/app/services/auth.service';
   styleUrls: ['./add-symptoms-modal.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
-export class AddSymptomsModalComponent implements OnInit, OnDestroy {
+export class AddSymptomsModalComponent implements OnInit {
 
   selectedDate: DateTime | null = DateTime.now();
   selectedDateString = this.selectedDate.toISODate();
   modalName: string;
   selectedSymptoms: Symptom = {id: "", userId: "", date: this.selectedDate?.toString(), mood: [] };
-  selectedMoods = []; 
+  selectedMoods = [];
+  moods = [
+    { val: 'Jó', isChecked: false },
+    { val: 'Rossz', isChecked: false },
+    { val: 'Ideges', isChecked: false },
+    { val: 'Nyugodt', isChecked: false },
+    { val: 'Boldog', isChecked: false }
+  ];
+  userId = '';
+  bloodValue = '';
+  mucusValue = '';
 
-  constructor(private modalCtrl: ModalController, private symptomService: SymptomsService, private authService: AuthService) {}
+  constructor(private modalCtrl: ModalController, private symptomService: SymptomsService, private authService: AuthService) {
+    this.authService.isUserLoggedIn().subscribe(user =>{
+      this.userId = user.uid;
+    })
+  }
 
   dateClass: MatCalendarCellClassFunction<DateTime> = (cellDate, view) => {
     // Only highligh dates inside the month view.
@@ -57,43 +71,58 @@ export class AddSymptomsModalComponent implements OnInit, OnDestroy {
   confirm() {
 
     // error ágban hibát kezelni
-      this.authService.isUserLoggedIn().subscribe(user =>{
-        
-        for(let mood of this.moods){
-          if(mood.isChecked === true){
-            this.selectedSymptoms.mood.push(mood.val);
-          }
-        }
+    for(let mood of this.moods){
+      if(mood.isChecked === true){
+        this.selectedSymptoms.mood.push(mood.val);
+      }
+    }
 
-        this.selectedSymptoms.date = this.selectedDate.toISODate();
-        this.selectedSymptoms.userId = user.uid;
-        this.selectedSymptoms.id =  user.uid + '_' + this.selectedSymptoms.date;
-        console.log(this.selectedSymptoms)
+    this.selectedSymptoms.date = this.selectedDate.toISODate();
 
-        //TODO: if that 
-        this.symptomService.getSymptomsById(this.selectedSymptoms.id).subscribe(res =>{
-          if(res.length > 0){
-            //ugyanaz mint add 
-            this.symptomService.updateSymptoms(this.selectedSymptoms);
-          } else{
-            this.symptomService.addSymptoms(this.selectedSymptoms);
-          }
-        })
-      })
-    
+    this.selectedSymptoms.userId = this.userId;
+    this.selectedSymptoms.id =  this.userId + '_' + this.selectedSymptoms.date;
+    console.log(this.selectedSymptoms)
+
+    this.symptomService.addSymptoms(this.selectedSymptoms);
+
     //dismiss az add/update után egyből, async/await-tel, hogy ne záródjon be, amíg hiba nélkül hozzáadtam a tünetet
     return this.modalCtrl.dismiss(this.modalName, 'confirm');
   }
 
-  public moods = [
-    { val: 'Jó', isChecked: false },
-    { val: 'Rossz', isChecked: false },
-    { val: 'Ideges', isChecked: false },
-    { val: 'Nyugodt', isChecked: false },
-    { val: 'Boldog', isChecked: false }
-  ];
-
   ngOnInit() {
+  }
+
+  onSelectedDateChange($event){
+
+    //"BfNxwL2Df9bpWuxBhm88cPJuqyz1_2023-01-15"
+    let year = $event.c.year.toString();
+    let month = ($event.c.month < 10)? '0' + $event.c.month.toString() : $event.c.month.toString(); 
+    let day = ($event.c.day < 10)? '0' + $event.c.day.toString() : $event.c.day.toString();
+    let symptomId = this.userId + '_' + year + '-' + month + '-' + day;
+
+    this.symptomService.getSymptomsById(symptomId).subscribe(res =>{
+      if (res != null){
+
+        this.selectedSymptoms.blood = res.blood;
+        this.selectedSymptoms.cervicalMucus = res.cervicalMucus;
+        this.bloodValue = res.blood;
+        this.mucusValue = res.cervicalMucus;
+        for(let mood of this.moods){
+          for(let moodRes of res.mood){
+            if(mood.val == moodRes){
+              mood.isChecked = true;
+            }
+          }
+        }
+      } else{
+        this.bloodValue = null;
+        this.mucusValue = null;
+        for(let mood of this.moods){
+          mood.isChecked = false;
+        }
+      }
+    })
+
   }
 
   bloodSegmentChanged($event){
@@ -104,10 +133,6 @@ export class AddSymptomsModalComponent implements OnInit, OnDestroy {
   mucusSegmentChanged($event){
     let mucus = $event.detail['value'];
     this.selectedSymptoms.cervicalMucus = mucus;
-  }
-
-  ngOnDestroy(){
-    this.authService
   }
 
 }

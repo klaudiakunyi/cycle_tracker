@@ -15,7 +15,13 @@
 <ion-content>
 
   <ion-grid>    
-    <mat-calendar firstdayofweek="1" [dateClass]="dateClass" [(selected)]="selectedDate" #picker></mat-calendar>
+    <mat-calendar 
+      firstdayofweek="1" 
+      [dateClass]="dateClass" 
+      [(selected)]="selectedDate"
+      (selectedChange)="onSelectedDateChange($event)" 
+      #picker>
+    </mat-calendar>
 
     <ion-card>
       <ion-card-header>
@@ -25,7 +31,7 @@
         <ion-item>
           <ion-label>
             Vérzés:
-            <ion-segment (ionChange)="bloodSegmentChanged($event)">
+            <ion-segment (ionChange)="bloodSegmentChanged($event)" [value]="bloodValue">
               <ion-segment-button value="light">
                 <ion-label>Gyenge</ion-label>
               </ion-segment-button>
@@ -41,7 +47,7 @@
         <ion-item>
           <ion-label>
             Méhnyaknyák:
-            <ion-segment (ionChange)="mucusSegmentChanged($event)" scrollable="true">
+            <ion-segment (ionChange)="mucusSegmentChanged($event)" scrollable="true" [value]="mucusValue">
               <ion-segment-button value="dry">
                 <ion-label>Száraz</ion-label>
               </ion-segment-button>
