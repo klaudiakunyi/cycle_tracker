@@ -22,6 +22,10 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatLuxonDateModule } from 	'@angular/material-luxon-adapter';
 import { DateAdapter, MAT_DATE_LOCALE } from '@angular/material/core';
 import { CustomDateAdapter } from './classes/custom_date';
+import { USE_EMULATOR as USE_AUTH_EMULATOR } from '@angular/fire/compat/auth';
+import { USE_EMULATOR as USE_DATABASE_EMULATOR } from '@angular/fire/compat/database';
+import { USE_EMULATOR as USE_FIRESTORE_EMULATOR } from '@angular/fire/compat/firestore';
+import { USE_EMULATOR as USE_FUNCTIONS_EMULATOR } from '@angular/fire/compat/functions';
 
 @NgModule({
   declarations: [AppComponent, AddSymptomsModalComponent],
@@ -43,7 +47,11 @@ import { CustomDateAdapter } from './classes/custom_date';
   providers: [
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     {provide: MAT_DATE_LOCALE, useValue: 'hu-HU'},
-    //{provide: DateAdapter, useClass:  CustomDateAdapter}
+    //{provide: DateAdapter, useClass:  CustomDateAdapter},
+    { provide: USE_AUTH_EMULATOR, useValue: environment.useEmulators ? ['http://localhost', 9099] : undefined },
+    { provide: USE_DATABASE_EMULATOR, useValue: environment.useEmulators ? ['http://localhost', 9000] : undefined },
+    { provide: USE_FIRESTORE_EMULATOR, useValue: environment.useEmulators ? ['http://localhost', 8080] : undefined },
+    { provide: USE_FUNCTIONS_EMULATOR, useValue: environment.useEmulators ? ['http://localhost', 5001] : undefined },
   ],
   bootstrap: [AppComponent],
 })

@@ -1,4 +1,3 @@
-import { DateTime } from "luxon";
 
 export interface Symptom{
     id: string,

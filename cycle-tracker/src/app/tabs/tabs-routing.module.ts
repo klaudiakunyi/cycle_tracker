@@ -4,7 +4,7 @@ import { TabsPage } from './tabs.page';
 
 const routes: Routes = [
   {
-    path: 'tabs',
+    path: '',
     component: TabsPage,
     children: [
       {
@@ -28,7 +28,7 @@ const routes: Routes = [
         loadChildren: () => import('../pages/settings/settings.module').then( m => m.SettingsPageModule)
       },
       {
-        path: '',
+        path: '**',
         redirectTo: 'cycle',
         pathMatch: 'full'
       },
