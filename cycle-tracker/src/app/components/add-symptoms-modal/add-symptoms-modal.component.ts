@@ -6,6 +6,7 @@ import { Symptom } from 'src/app/interfaces/symptom';
 import { SymptomsService } from 'src/app/services/symptoms.service';
 import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE} from '@angular/material/core';
 import { AuthService } from 'src/app/services/auth.service';
+import { ToastController } from '@ionic/angular';
 
 @Component({
   selector: 'app-add-symptoms-modal',
@@ -30,8 +31,12 @@ export class AddSymptomsModalComponent implements OnInit {
   userId = '';
   bloodValue = '';
   mucusValue = '';
+  dateHasLog = false;
 
-  constructor(private modalCtrl: ModalController, private symptomService: SymptomsService, private authService: AuthService) {
+  constructor(private modalCtrl: ModalController, 
+              private symptomService: SymptomsService, 
+              private authService: AuthService, 
+              public toastController: ToastController) {
     this.authService.isUserLoggedIn().subscribe(user =>{
       this.userId = user.uid;
     })
@@ -103,8 +108,10 @@ export class AddSymptomsModalComponent implements OnInit {
     this.symptomService.getSymptomsById(symptomId).subscribe(res =>{
       if (res != null){
 
-        this.selectedSymptoms.blood = res.blood;
-        this.selectedSymptoms.cervicalMucus = res.cervicalMucus;
+        // this.selectedSymptoms.blood = res.blood;
+        // this.selectedSymptoms.cervicalMucus = res.cervicalMucus;
+        this.selectedSymptoms = res;
+        console.log(this.selectedSymptoms);
         this.bloodValue = res.blood;
         this.mucusValue = res.cervicalMucus;
         for(let mood of this.moods){
@@ -114,12 +121,15 @@ export class AddSymptomsModalComponent implements OnInit {
             }
           }
         }
+        this.dateHasLog = true;
+
       } else{
         this.bloodValue = null;
         this.mucusValue = null;
         for(let mood of this.moods){
           mood.isChecked = false;
         }
+        this.dateHasLog = false;
       }
     })
 
@@ -133,6 +143,25 @@ export class AddSymptomsModalComponent implements OnInit {
   mucusSegmentChanged($event){
     let mucus = $event.detail['value'];
     this.selectedSymptoms.cervicalMucus = mucus;
+  }
+
+  delete(){
+    this.symptomService.deleteSymptoms(this.selectedSymptoms.id).then(()=>{
+      console.log("sikeres törlés");
+      this.presentToast('Sikeres törlés.')
+    }).catch(()=>{
+      console.log("nem sikerült a törlés :(");
+      this.presentToast('Sikertelen törlés. :(')
+    })
+  }
+
+  async presentToast(message: string) {
+    const toast = await this.toastController.create({
+      message: message,
+      duration: 2000,
+      color: 'dark'
+    });
+    toast.present();
   }
 
 }
