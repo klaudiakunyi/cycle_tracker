@@ -14,15 +14,16 @@
 
 <ion-content>
 
-  <ion-grid>    
-    <mat-calendar 
-      firstdayofweek="1" 
-      [dateClass]="dateClass" 
-      [(selected)]="selectedDate"
-      (selectedChange)="onSelectedDateChange($event)" 
-      #picker>
-    </mat-calendar>
-
+  <ion-grid>
+    <div *ngIf="symptomLogDays.length !== 0">
+      <mat-calendar 
+        firstdayofweek="1" 
+        [dateClass]="dateClass" 
+        [(selected)]="selectedDate"
+        (selectedChange)="onSelectedDateChange($event)" 
+        #picker>
+      </mat-calendar>
+    </div>
     <ion-card>
       <ion-card-header>
         <ion-card-title>Dátum: {{ selectedDate.toISODate() }}</ion-card-title>
@@ -83,7 +84,7 @@
         </ion-item>
         <ion-item>
           <ion-label>Hőmérséklet</ion-label>
-          <ion-input placeholder="0.00" type="number" min="35" max="40" step="0.01"></ion-input>
+          <ion-input placeholder="0.00" type="number" min="35" max="40" step="0.01" [(ngModel)]="temperature"></ion-input>
         </ion-item>
       </ion-card-content>
     </ion-card>   

@@ -14,11 +14,12 @@ export class SymptomsService {
   constructor(private afs: AngularFirestore) { }
 
   addSymptoms(symptoms: Symptom){
-    this.afs.collection<Symptom>(this.collectionName).doc(symptoms.id).set(symptoms);
+    return this.afs.collection<Symptom>(this.collectionName).doc(symptoms.id).set(symptoms);
   }
 
-  getSymptomsByDate(date: string){
-    return this.afs.collection<Symptom>(this.collectionName, ref => ref.where('date', '==', date).where('user', '==', '').orderBy('date', 'asc').limit(10)).valueChanges();
+  getSymptomsByMonthAndId(month: string, year: string, id: string){
+    let idYearMonth = id + '_' + year + '-' + month + '-'; 
+    return this.afs.collection<Symptom>(this.collectionName, ref => ref.where('id', '>=', idYearMonth).where('id', '<=', idYearMonth + '\uf8ff')).valueChanges();
   }
 
   getSymptomsById(id: string){
