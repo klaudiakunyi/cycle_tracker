@@ -39,3 +39,7 @@ button.blue-symptom-log{
   background: rgb(153, 193, 247);
   border-radius: 100%;
 }
+
+button[mat-icon-button]{
+  background-color: transparent;
+}

@@ -21,6 +21,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatLuxonDateModule } from 	'@angular/material-luxon-adapter';
+import { MatButtonModule } from '@angular/material/button';
 import { DateAdapter, MAT_DATE_LOCALE } from '@angular/material/core';
 import { CustomDateAdapter } from './classes/custom_date';
 import { USE_EMULATOR as USE_AUTH_EMULATOR } from '@angular/fire/compat/auth';
@@ -44,7 +45,8 @@ import { USE_EMULATOR as USE_FUNCTIONS_EMULATOR } from '@angular/fire/compat/fun
     MatLuxonDateModule,
     MatFormFieldModule,
     MatInputModule,
-    MatIconModule
+    MatIconModule,
+    MatButtonModule
     ],
   providers: [
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
