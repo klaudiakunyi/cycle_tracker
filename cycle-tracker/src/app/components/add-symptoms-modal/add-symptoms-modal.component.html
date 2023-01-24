@@ -15,13 +15,22 @@
 <ion-content>
 
   <ion-grid>
-    <div *ngIf="symptomLogDays.length !== 0">
+    <div *ngIf="symptomsLoaded">
       <mat-calendar 
         firstdayofweek="1" 
         [dateClass]="dateClass" 
         [(selected)]="selectedDate"
-        (selectedChange)="onSelectedDateChange($event)" 
+        (dateChange)="onStateChange($event)"
+        (selectedChange)="onSelectedDateChange($event)"
+        [headerComponent]="exampleHeader"
         #picker>
+
+        <!-- <mat-calendar-header
+        (nextClicked)="onStateChange($event)"
+        (previousClicked)="onStateChange($event)"
+        (currentPeriodClicked)="onStateChange($event)">
+        </mat-calendar-header> -->
+        
       </mat-calendar>
     </div>
     <ion-card>

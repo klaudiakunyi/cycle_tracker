@@ -18,6 +18,7 @@ import { FormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatInputModule } from '@angular/material/input';
+import { MatIconModule } from '@angular/material/icon';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatLuxonDateModule } from 	'@angular/material-luxon-adapter';
 import { DateAdapter, MAT_DATE_LOCALE } from '@angular/material/core';
@@ -42,7 +43,8 @@ import { USE_EMULATOR as USE_FUNCTIONS_EMULATOR } from '@angular/fire/compat/fun
     MatDatepickerModule,
     MatLuxonDateModule,
     MatFormFieldModule,
-    MatInputModule
+    MatInputModule,
+    MatIconModule
     ],
   providers: [
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
