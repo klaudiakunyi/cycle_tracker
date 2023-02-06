@@ -20,10 +20,10 @@
         firstdayofweek="1" 
         [dateClass]="dateClass" 
         [(selected)]="selectedDate"
-        (dateChange)="onStateChange($event)"
         (selectedChange)="onSelectedDateChange($event)"
         [headerComponent]="exampleHeader"
-        #picker>
+        #matCalendar>
+        <!-- [headerComponent]="exampleHeader" -->
 
         <!-- <mat-calendar-header
         (nextClicked)="onStateChange($event)"

@@ -43,3 +43,11 @@ button.blue-symptom-log{
 button[mat-icon-button]{
   background-color: transparent;
 }
+
+button.empty-day{
+  outline-color: transparent;
+  outline-width: 0px;
+  outline-offset: -3px;
+  //background: rgb(202, 202, 202);
+  border-radius: 100%;
+}

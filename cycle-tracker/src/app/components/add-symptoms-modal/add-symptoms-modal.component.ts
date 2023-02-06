@@ -1,10 +1,10 @@
-import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, ViewEncapsulation, Inject, ChangeDetectorRef } from '@angular/core';
-import { MatCalendar, MatCalendarCellClassFunction } from '@angular/material/datepicker';
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, ViewEncapsulation, Inject, ChangeDetectorRef, ViewChild, AfterViewInit, ElementRef, AfterViewChecked } from '@angular/core';
+import { MatCalendar, MatCalendarCellClassFunction, MatCalendarHeader, MatDateRangePicker } from '@angular/material/datepicker';
 import { ModalController } from '@ionic/angular';
 import { DateTime } from 'luxon';
 import { Symptom } from 'src/app/interfaces/symptom';
 import { SymptomsService } from 'src/app/services/symptoms.service';
-import {DateAdapter, MatDateFormats, MAT_DATE_FORMATS, MAT_DATE_LOCALE} from '@angular/material/core';
+import { DateAdapter, MatDateFormats, MAT_DATE_FORMATS, MAT_DATE_LOCALE} from '@angular/material/core';
 import { AuthService } from 'src/app/services/auth.service';
 import { ToastController } from '@ionic/angular';
 import { Subject } from 'rxjs';
@@ -17,9 +17,11 @@ import { takeUntil } from 'rxjs/operators';
   encapsulation: ViewEncapsulation.None
 })
 export class AddSymptomsModalComponent implements OnInit {
+  @ViewChild('matCalendar') calendar: MatCalendar<DateTime>;
   exampleHeader = ExampleHeader;
   selectedDate: DateTime | null = DateTime.now();
-
+  displayedMonth = DateTime.now().month;
+  displayedYear = DateTime.now().year;
   modalName: string;
   selectedSymptoms: Symptom = {id: "", userId: "", date: this.selectedDate?.toString(), mood: [] };
   selectedMoods = [];
@@ -36,7 +38,7 @@ export class AddSymptomsModalComponent implements OnInit {
   dateHasLog = false;
   temperature = 0.00;
 
-  symptomLogDays = [];
+  symptomLogDays: number[] = [];
   symptomsLoaded = false;
 
   refresh: Subject<any> = new Subject();
@@ -117,11 +119,6 @@ export class AddSymptomsModalComponent implements OnInit {
   }
 
   ngOnInit() {
-  }
-
-  onStateChange($event){
-    console.log($event.value)
-    console.log("tortenjen mar valami")
   }
 
   onSelectedDateChange($event){
@@ -241,15 +238,24 @@ export class AddSymptomsModalComponent implements OnInit {
   changeDetection: ChangeDetectionStrategy.OnPush,
   
 })
-export class ExampleHeader<D> implements OnDestroy {
-  private _destroyed = new Subject<void>();
 
+
+export class ExampleHeader implements OnDestroy {
+  private _destroyed = new Subject<void>();
+  symptomLogDays: number[] = [];
+
+  userId = '';
   constructor(
-      private _calendar: MatCalendar<D>, private _dateAdapter: DateAdapter<D>,
-      @Inject(MAT_DATE_FORMATS) private _dateFormats: MatDateFormats, cdr: ChangeDetectorRef) {
-    _calendar.stateChanges
-        .pipe(takeUntil(this._destroyed))
-        .subscribe(() => cdr.markForCheck());
+      private _calendar: MatCalendar<DateTime>, 
+      private _dateAdapter: DateAdapter<DateTime>,
+      @Inject(MAT_DATE_FORMATS) private _dateFormats: MatDateFormats, 
+      cdr: ChangeDetectorRef,
+      private authService: AuthService,
+      private symptomService: SymptomsService) {
+        _calendar.stateChanges.pipe(takeUntil(this._destroyed)).subscribe(() => cdr.markForCheck());
+        this.authService.isUserLoggedIn().subscribe(user =>{
+          this.userId = user.uid;
+        });
   }
 
   ngOnDestroy() {
@@ -264,17 +270,65 @@ export class ExampleHeader<D> implements OnDestroy {
   }
 
   previousClicked(mode: 'month' | 'year') {
-    console.log("tortenjen mar valami")
+    this.symptomLogDays = [];    
+
     this._calendar.activeDate = mode === 'month' ?
         this._dateAdapter.addCalendarMonths(this._calendar.activeDate, -1) :
         this._dateAdapter.addCalendarYears(this._calendar.activeDate, -1);
+
+    let year: string = this._calendar.activeDate.year.toString();
+    let month: string = (this._calendar.activeDate.month < 10)? '0' + this._calendar.activeDate.month.toString() : this._calendar.activeDate.month.toString();
+    console.log('month: ' + month + ', year: ' + year + ', userId: ' + this.userId);
+    this.symptomService.getSymptomsByMonthAndId(month , year, this.userId).subscribe((monthSymptoms)=>{
+      for(let daySymptoms of monthSymptoms){
+        let dayFromBE = daySymptoms.date.slice(-2);
+        this.symptomLogDays.push(+dayFromBE);
+      }
+      this._calendar.dateClass = (cellDate, view) => {
+        if (view === 'month') {
+          const date = cellDate.day;
+          if(this.symptomLogDays.includes(date)){
+            return 'symptom-log';
+          }
+          return 'empty-day';
+        }
+        return 'empty-day';
+      };
+      console.log('symptom log days ' + this.symptomLogDays)
+      this._calendar.updateTodaysDate();
+    })
+    this._calendar.updateTodaysDate();
   }
 
   nextClicked(mode: 'month' | 'year') {
-    console.log("tortenjen mar valami")
+    this.symptomLogDays = [];
+
     this._calendar.activeDate = mode === 'month' ?
         this._dateAdapter.addCalendarMonths(this._calendar.activeDate, 1) :
         this._dateAdapter.addCalendarYears(this._calendar.activeDate, 1);
+    
+    let year: string = this._calendar.activeDate.year.toString();
+    let month: string = (this._calendar.activeDate.month < 10)? '0' + this._calendar.activeDate.month.toString() : this._calendar.activeDate.month.toString();
+    console.log('month: ' + month + ', year: ' + year + ', userId: ' + this.userId);
+    this.symptomService.getSymptomsByMonthAndId(month , year, this.userId).subscribe((monthSymptoms)=>{
+      for(let daySymptoms of monthSymptoms){
+        let dayFromBE = daySymptoms.date.slice(-2);
+        this.symptomLogDays.push(+dayFromBE);
+      }
+      this._calendar.dateClass = (cellDate, view) => {
+        if (view === 'month') {
+          const date = cellDate.day;
+          if(this.symptomLogDays.includes(date)){
+            return 'symptom-log';
+          }
+          return 'empty-day';
+        }
+        return 'empty-day';
+      };
+      console.log('symptom log days ' + this.symptomLogDays)
+      this._calendar.updateTodaysDate();
+    })
+    this._calendar.updateTodaysDate();
   }
 }
 
