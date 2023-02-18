@@ -15,24 +15,21 @@
 <ion-content>
 
   <ion-grid>
-    <div *ngIf="symptomsLoaded">
       <mat-calendar 
         firstdayofweek="1" 
-        [dateClass]="dateClass" 
+        [dateClass]="dateClass"
         [(selected)]="selectedDate"
         (selectedChange)="onSelectedDateChange($event)"
         [headerComponent]="exampleHeader"
         #matCalendar>
-        <!-- [headerComponent]="exampleHeader" -->
-
         <!-- <mat-calendar-header
+        (click)="onStateChange($event)"
         (nextClicked)="onStateChange($event)"
         (previousClicked)="onStateChange($event)"
-        (currentPeriodClicked)="onStateChange($event)">
+        (currentPeriodClicked)="onStateChange($event)" #calHead>
         </mat-calendar-header> -->
-        
       </mat-calendar>
-    </div>
+    <!-- </div> -->
     <ion-card>
       <ion-card-header>
         <ion-card-title>Dátum: {{ selectedDate.toISODate() }}</ion-card-title>
