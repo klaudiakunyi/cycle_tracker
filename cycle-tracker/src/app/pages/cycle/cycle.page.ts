@@ -1,6 +1,4 @@
-import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-// import { Chart, Point, BarElement, BarController, CategoryScale, Decimation, Filler, Legend, Title, Tooltip} from 'chart.js';
-import { Chart, Point, registerables, Tooltip } from 'chart.js';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { DateTime } from 'luxon';
 import { Symptom } from 'src/app/interfaces/symptom';
 import { AuthService } from 'src/app/services/auth.service';
@@ -11,12 +9,8 @@ import { SymptomsService } from 'src/app/services/symptoms.service';
   templateUrl: './cycle.page.html',
   styleUrls: ['./cycle.page.scss'],
 })
-export class CyclePage implements OnInit, AfterViewInit {
+export class CyclePage implements OnInit {
 
-  @ViewChild('chart')
-  private chartRef: ElementRef;
-  private chart: Chart;
-  private data: Point[];
   userId = '';
   symptoms: Symptom[] = [];
   lastBleedingDay: string;
@@ -30,15 +24,7 @@ export class CyclePage implements OnInit, AfterViewInit {
   fertileWindowLastDate = '';
   fertilityBeforeNextPeriod = 14;
 
-  menstruation = 5;
-  follicular = 7;
-  fertility = 6;
-  luteal = 10;
-
   constructor(private symptomsService: SymptomsService, private authService: AuthService) {
-    //Chart.register( BarElement, BarController, CategoryScale, Decimation, Filler, Legend, Title, Tooltip);
-    Chart.register(...registerables);
-    this.data = [{x: 1, y: 5}, {x: 2, y: 10}, {x: 3, y: 6}, {x: 4, y: 2}, {x: 4.1, y: 6}];
   }
   
   ngOnInit(): void {
@@ -92,67 +78,6 @@ export class CyclePage implements OnInit, AfterViewInit {
         this.fertileWindowFirstDate = fertileWindowsFirstDate.toISODate();
       })
     })
-  }
-
-  ngAfterViewInit(): void {
-
-    this.chart = new Chart(this.chartRef.nativeElement, {
-      type: 'doughnut',
-      data:  {
-        labels: [
-          'Menstruáció',
-          'Follikuláris fázis',
-          'Termékenységi ablak',
-          'Luteális fázis'
-        ],
-        datasets: [{
-          label: 'Ciklus fázisainak hosszai',
-          data: [this.menstruation*10, this.follicular*10, this.fertility*10, this.luteal*10, 1],
-          backgroundColor: [
-            'rgba(255, 227, 231, 1)',
-            'rgba(227, 255, 233, 1)',
-            'rgba(227, 251, 255, 1)',
-            'rgba(255, 251, 227, 1)',
-            'rgba(0,0,0, 0.5)'
-          ],
-          //hoverOffset: 4,
-          borderWidth: 0,
-          order: 2
-        }, {
-          type: "pie",
-          data: [50, 70, 60, 100, 1],
-          backgroundColor: [
-            'rgba(0,0,0, 0)',
-            'rgba(0,0,0,0)',
-            'rgba(0,0,0,0)',
-            'rgba(0,0,0,0)',
-            'rgba(0,0,0, 0.5)'
-          ],
-          order: 1,
-          borderWidth: 0,
-          
-          
-        }]
-      },
-      options: {
-          "cutout": 0,
-          "rotation": -180,
-          "circumference": 360,
-          "plugins": {
-          "legend": {
-              "display": true
-          },
-          "tooltip": {
-              "enabled": false
-          },
-          "title": {
-              "display": false,
-              "text": '4',
-              "position": "bottom"
-          }
-    }
-      }
-    });
   }
 
 }
