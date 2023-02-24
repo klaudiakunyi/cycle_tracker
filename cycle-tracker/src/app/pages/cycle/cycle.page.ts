@@ -1,6 +1,10 @@
 import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 // import { Chart, Point, BarElement, BarController, CategoryScale, Decimation, Filler, Legend, Title, Tooltip} from 'chart.js';
 import { Chart, Point, registerables, Tooltip } from 'chart.js';
+import { DateTime } from 'luxon';
+import { Symptom } from 'src/app/interfaces/symptom';
+import { AuthService } from 'src/app/services/auth.service';
+import { SymptomsService } from 'src/app/services/symptoms.service';
 
 @Component({
   selector: 'app-cycle',
@@ -13,16 +17,81 @@ export class CyclePage implements OnInit, AfterViewInit {
   private chartRef: ElementRef;
   private chart: Chart;
   private data: Point[];
+  userId = '';
+  symptoms: Symptom[] = [];
+  lastBleedingDay: string;
+  lastPeriodsFirstBleedingDay: string;
+  firstBleedingDays = [];
+  today = DateTime.now().toISODate();
+  diffsInDays = 0;
+  averageCycleLength = 0;
+  nextCycleStarts = '';
+  fertileWindowFirstDate = '';
+  fertileWindowLastDate = '';
+  fertilityBeforeNextPeriod = 14;
 
   menstruation = 5;
   follicular = 7;
   fertility = 6;
   luteal = 10;
 
-  constructor() {
+  constructor(private symptomsService: SymptomsService, private authService: AuthService) {
     //Chart.register( BarElement, BarController, CategoryScale, Decimation, Filler, Legend, Title, Tooltip);
     Chart.register(...registerables);
     this.data = [{x: 1, y: 5}, {x: 2, y: 10}, {x: 3, y: 6}, {x: 4, y: 2}, {x: 4.1, y: 6}];
+  }
+  
+  ngOnInit(): void {
+    let foundLastDay = false;
+    let foundfirstDayOfLastPeriod = false;
+    this.authService.isUserLoggedIn().subscribe(user =>{
+      this.userId = user.uid;
+      console.log(this.userId);
+      this.symptomsService.getSymptomsByUserIdDescendingByDate(this.userId).subscribe(res =>{
+        this.symptoms = res;
+        this.firstBleedingDays = [];
+        for(let i = 0; i < this.symptoms.length; i++){
+          if(this.symptoms[i].blood !== 'nothing' && foundLastDay === false){
+            this.lastBleedingDay = this.symptoms[i].date;
+            foundLastDay = true;
+          }
+          let date = DateTime.fromISO(this.symptoms[i].date);
+          let dateBefore = date.minus({days: 1});
+          let dateISO = this.symptoms[i].date;
+          let dateBeforeISO = dateBefore.toISODate();
+
+          if(this.symptoms[i].blood !== 'nothing' && 
+              (dateISO === dateBeforeISO && this.symptoms[i+1]?.blood === 'nothing') || 
+              this.symptoms[i+1]?.date !== dateBeforeISO ||
+              i >= this.symptoms.length){
+            if(!foundfirstDayOfLastPeriod){
+              this.lastPeriodsFirstBleedingDay = this.symptoms[i].date;
+              foundfirstDayOfLastPeriod = true;
+            }
+            this.firstBleedingDays.push(this.symptoms[i].date)
+            //console.log(this.firstBleedingDays)
+          }
+        }
+        this.diffsInDays = 0;
+        for(let i = 0; i < this.firstBleedingDays.length; i++){
+          if(this.firstBleedingDays[i+1]){
+            console.log(this.firstBleedingDays[i+1])
+            let end = DateTime.fromISO(this.firstBleedingDays[i]);
+            let start = DateTime.fromISO(this.firstBleedingDays[i+1]);
+            let diffInDays = end.diff(start, 'days').days;
+            this.diffsInDays += diffInDays;
+          }
+        }
+        this.averageCycleLength = this.diffsInDays/this.firstBleedingDays.length;
+        console.log("átlagos ciklushossz:" + this.averageCycleLength)
+        let nextCycleStartsDate = DateTime.fromISO(this.lastPeriodsFirstBleedingDay).plus({days: this.averageCycleLength})
+        this.nextCycleStarts = nextCycleStartsDate.toISODate();
+        let fertileWindowLastDate = nextCycleStartsDate.minus({ days: this.fertilityBeforeNextPeriod});
+        this.fertileWindowLastDate = fertileWindowLastDate.toISODate();
+        let fertileWindowsFirstDate = fertileWindowLastDate.minus({ days: 3});
+        this.fertileWindowFirstDate = fertileWindowsFirstDate.toISODate();
+      })
+    })
   }
 
   ngAfterViewInit(): void {
@@ -84,85 +153,6 @@ export class CyclePage implements OnInit, AfterViewInit {
     }
       }
     });
-
-  //   this.chart = new Chart(this.chartRef.nativeElement, {
-  //     "type": "doughnut",
-  //     "data": {
-  //         "datasets": [
-  //             {
-  //                 "data": [
-  //                     30,
-  //                     30,
-  //                     20,
-  //                     1,
-  //                     20
-  //                 ],
-  //                 "backgroundColor": [
-  //                     "rgb(255, 69, 96)",
-  //                     "rgb(206, 148, 73)",
-  //                     "rgb(153, 223, 89)",
-  //                     "rgba(0, 0, 0, 0.6)",
-  //                     "rgb(153, 223, 89)"
-  //                 ],
-  //                 "borderWidth": 0.2,
-  //                 "hoverBackgroundColor": [
-  //                     "rgb(255, 69, 96)",
-  //                     "rgb(206, 148, 73)",
-  //                     "rgb(153, 223, 89)",
-  //                     "rgba(0, 0, 0, 0.6)",
-  //                     "rgb(153, 223, 89)"
-  //                 ],
-  //                 "hoverBorderWidth": 0.2
-  //             },
-  //             {
-  //                 "data": [
-  //                     30,
-  //                     30,
-  //                     20,
-  //                     1,
-  //                     20
-  //                 ],
-  //                 "backgroundColor": [
-  //                     "rgba(0, 0, 0, 0)",
-  //                     "rgba(0, 0, 0, 0)",
-  //                     "rgba(0, 0, 0, 0)",
-  //                     "rgba(0, 0, 0, 0.6)",
-  //                     "rgba(0, 0, 0, 0)"
-  //                 ],
-  //                 "borderWidth": 0,
-  //                 "hoverBackgroundColor": [
-  //                     "rgba(0, 0, 0, 0)",
-  //                     "rgba(0, 0, 0, 0)",
-  //                     "rgba(0, 0, 0, 0)",
-  //                     "rgba(0, 0, 0, 0.6)",
-  //                     "rgba(0, 0, 0, 0)"
-  //                 ],
-  //                 "hoverBorderWidth": 0
-  //             }
-  //         ]
-  //     },
-  //     "options": {
-  //         "cutout": 0,
-  //         "rotation": -180,
-  //         "circumference": 360,
-  //         "plugins": {
-  //         "legend": {
-  //             "display": true
-  //         },
-  //         "tooltip": {
-  //             "enabled": true
-  //         },
-  //         "title": {
-  //             "display": false,
-  //             "text": '4',
-  //             "position": "bottom"
-  //         }
-  //       }
-  //     }
-  // })
-  }
-
-  ngOnInit() {
   }
 
 }

@@ -12,17 +12,27 @@
   <ion-list>
     <ion-item>
       <ion-label>
-        Ma: augusztus 14.
+        Ma: {{ today }}
       </ion-label>
     </ion-item>
     <ion-item>
       <ion-label class="ion-text-wrap">
-        Következő menstruáció: augusztus 20.
+        Következő menstruáció: {{ nextCycleStarts }}
       </ion-label>
     </ion-item>
     <ion-item>
       <ion-label class="ion-text-wrap">
-        Következő termékenységi ablak: szeptember 1-4.
+        Következő termékenységi ablak: {{ fertileWindowFirstDate }} - {{ fertileWindowLastDate }}
+      </ion-label>
+    </ion-item>
+    <ion-item>
+      <ion-label class="ion-text-wrap">
+        Utolsó vérzés első napja: {{ lastPeriodsFirstBleedingDay }}
+      </ion-label>
+    </ion-item>
+    <ion-item>
+      <ion-label class="ion-text-wrap">
+        Átlagos ciklushossz: {{ averageCycleLength | number:'1.0-0' }} nap 
       </ion-label>
     </ion-item>
   </ion-list>

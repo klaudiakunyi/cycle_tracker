@@ -21,6 +21,7 @@
         [(selected)]="selectedDate"
         (selectedChange)="onSelectedDateChange($event)"
         [headerComponent]="exampleHeader"
+        [maxDate]="today"
         #matCalendar>
         <!-- <mat-calendar-header
         (click)="onStateChange($event)"

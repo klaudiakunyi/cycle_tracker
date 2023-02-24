@@ -22,6 +22,7 @@ export class AddSymptomsModalComponent implements OnInit, AfterViewInit {
 
   exampleHeader = ExampleHeader;
   selectedDate: DateTime | null = DateTime.now();
+  today = DateTime.now();
   displayedMonth = DateTime.now().month;
   displayedYear = DateTime.now().year;
   modalName: string;

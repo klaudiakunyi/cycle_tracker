@@ -26,7 +26,11 @@ export class SymptomsService {
     return this.afs.collection<Symptom>(this.collectionName).doc(id).valueChanges();
   }
 
+  getSymptomsByUserIdDescendingByDate(userId: string){
+    return this.afs.collection<Symptom>(this.collectionName, ref => ref.where('userId', '==', userId).orderBy('date', 'desc')).valueChanges();
+  }
+
   deleteSymptoms(id: string){
     return this.afs.collection<Symptom>(this.collectionName).doc(id).delete();
   }
-}
+} 
