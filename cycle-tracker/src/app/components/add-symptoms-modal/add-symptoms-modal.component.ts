@@ -42,6 +42,7 @@ export class AddSymptomsModalComponent implements OnInit, AfterViewInit {
   temperature = 0.00;
 
   symptomLogDays: number[] = [];
+  symptomLogDaysPeriod: number[] = [];
 
   constructor(private modalCtrl: ModalController, 
               private symptomService: SymptomsService, 
@@ -125,7 +126,6 @@ export class AddSymptomsModalComponent implements OnInit, AfterViewInit {
           let dayFromBE = daySymptoms.date.slice(-2);
           this.symptomLogDays.push(+dayFromBE);
         }
-        console.log("oninit " +  this.symptomLogDays)
         this.calendar.updateTodaysDate();
       })
     })
@@ -249,7 +249,7 @@ export class AddSymptomsModalComponent implements OnInit, AfterViewInit {
 })
 
 
-export class ExampleHeader implements OnDestroy {
+export class ExampleHeader implements OnDestroy, OnInit {
   private _destroyed = new Subject<void>();
   symptomLogDays: number[] = [];
 
@@ -263,33 +263,15 @@ export class ExampleHeader implements OnDestroy {
       private symptomService: SymptomsService) {
         _calendar.stateChanges.pipe(takeUntil(this._destroyed)).subscribe(() => {
           cdr.markForCheck();
-          let year: string = this._calendar.activeDate.year.toString();
-          let month: string = (this._calendar.activeDate.month < 10)? '0' + this._calendar.activeDate.month.toString() : this._calendar.activeDate.month.toString();
-          this.symptomService.getSymptomsByMonthAndId(month , year, this.userId).subscribe((monthSymptoms)=>{
-            this.symptomLogDays = [];
-            for(let daySymptoms of monthSymptoms){
-              //push helyett egyenlőségjel
-              let dayFromBE = daySymptoms.date.slice(-2);
-              this.symptomLogDays.push(+dayFromBE);
-            }
-            this._calendar.dateClass = (cellDate, view) => {
-              if (view === 'month') {
-                const date = cellDate.day;
-                if(this.symptomLogDays.includes(date)){
-                  console.log("state changes")
-                  return 'symptom-log';
-                }
-                return 'empty-day';
-              }
-              return 'empty-day';
-            };
-            this._calendar.updateTodaysDate();
-          })
+          this.refreshSymptomLogDays();
         });
-        //kiszervezni
-        this.authService.isUserLoggedIn().subscribe(user =>{
-          this.userId = user.uid;
-        });
+  }
+
+  ngOnInit(): void {
+
+    this.authService.isUserLoggedIn().subscribe(user =>{
+      this.userId = user.uid;
+    });
   }
 
   ngOnDestroy() {
@@ -307,40 +289,20 @@ export class ExampleHeader implements OnDestroy {
     this._calendar.activeDate = mode === 'month' ?
         this._dateAdapter.addCalendarMonths(this._calendar.activeDate, -1) :
         this._dateAdapter.addCalendarYears(this._calendar.activeDate, -1);
-
-    let year: string = this._calendar.activeDate.year.toString();
-    let month: string = (this._calendar.activeDate.month < 10)? '0' + this._calendar.activeDate.month.toString() : this._calendar.activeDate.month.toString();
-    this.symptomService.getSymptomsByMonthAndId(month , year, this.userId).subscribe((monthSymptoms)=>{
-      this.symptomLogDays = [];
-      for(let daySymptoms of monthSymptoms){
-        //push helyett egyenlőségjel
-        let dayFromBE = daySymptoms.date.slice(-2);
-        this.symptomLogDays.push(+dayFromBE);
-      }
-      this._calendar.dateClass = (cellDate, view) => {
-        if (view === 'month') {
-          const date = cellDate.day;
-          if(this.symptomLogDays.includes(date)){
-            console.log("previous click")
-            return 'symptom-log';
-          }
-          return 'empty-day';
-        }
-        return 'empty-day';
-      };
-      this._calendar.updateTodaysDate();
-    })
+    this.refreshSymptomLogDays();
   }
 
   nextClicked(mode: 'month' | 'year') {
-    this.symptomLogDays = [];
     this._calendar.activeDate = mode === 'month' ?
         this._dateAdapter.addCalendarMonths(this._calendar.activeDate, 1) :
         this._dateAdapter.addCalendarYears(this._calendar.activeDate, 1);
+    this.refreshSymptomLogDays();
+  }
 
+  refreshSymptomLogDays(){
     let year: string = this._calendar.activeDate.year.toString();
     let month: string = (this._calendar.activeDate.month < 10)? '0' + this._calendar.activeDate.month.toString() : this._calendar.activeDate.month.toString();
-
+    this.symptomLogDays = [];
     this.symptomService.getSymptomsByMonthAndId(month , year, this.userId).subscribe((monthSymptoms)=>{
       this.symptomLogDays = [];
       for(let daySymptoms of monthSymptoms){
@@ -357,9 +319,7 @@ export class ExampleHeader implements OnDestroy {
         }
         return 'empty-day';
       };
-
       this._calendar.updateTodaysDate();
-
     })
   }
 }
