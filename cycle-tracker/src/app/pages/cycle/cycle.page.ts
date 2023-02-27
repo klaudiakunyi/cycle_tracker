@@ -15,14 +15,16 @@ export class CyclePage implements OnInit {
   symptoms: Symptom[] = [];
   lastBleedingDay: string;
   lastPeriodsFirstBleedingDay: string;
+  lastPeriodFirstbleedingDayMonthAndDay: string;
   firstBleedingDays = [];
-  today = DateTime.now().toISODate();
+  today = DateTime.now().setLocale('hu').toLocaleString({ month: 'long', day: 'numeric' });
   diffsInDays = 0;
   averageCycleLength = 0;
   nextCycleStarts = '';
   fertileWindowFirstDate = '';
   fertileWindowLastDate = '';
   fertilityBeforeNextPeriod = 14;
+  daysUntilNextPeriod: number;
 
   constructor(private symptomsService: SymptomsService, private authService: AuthService) {
   }
@@ -38,11 +40,14 @@ export class CyclePage implements OnInit {
         this.getAverageCycleLength();
 
         let nextCycleStartsDate = DateTime.fromISO(this.lastPeriodsFirstBleedingDay).plus({days: this.averageCycleLength})
-        this.nextCycleStarts = nextCycleStartsDate.toISODate();
+        
+        this.nextCycleStarts = nextCycleStartsDate.setLocale('hu').toLocaleString({ month: 'long', day: 'numeric' });
         let fertileWindowLastDate = nextCycleStartsDate.minus({ days: this.fertilityBeforeNextPeriod});
-        this.fertileWindowLastDate = fertileWindowLastDate.toISODate();
+        this.daysUntilNextPeriod = Math.round(nextCycleStartsDate.diff(DateTime.now(), 'days').as('days'));
+
+        this.fertileWindowLastDate = fertileWindowLastDate.setLocale('hu').toLocaleString({ month: 'long', day: 'numeric' });
         let fertileWindowsFirstDate = fertileWindowLastDate.minus({ days: 3});
-        this.fertileWindowFirstDate = fertileWindowsFirstDate.toISODate();
+        this.fertileWindowFirstDate = fertileWindowsFirstDate.setLocale('hu').toLocaleString({ month: 'long', day: 'numeric' });
       })
     })
   }
@@ -66,6 +71,7 @@ export class CyclePage implements OnInit {
           this.symptoms[i+1]?.date !== dateBeforeISO)){
         if(!foundfirstDayOfLastPeriod){
           this.lastPeriodsFirstBleedingDay = this.symptoms[i].date;
+          this.lastPeriodFirstbleedingDayMonthAndDay = DateTime.fromISO(this.symptoms[i].date).setLocale('hu').toLocaleString({ month: 'long', day: 'numeric' });
           foundfirstDayOfLastPeriod = true;
         }
         this.firstBleedingDays.push(this.symptoms[i].date)
