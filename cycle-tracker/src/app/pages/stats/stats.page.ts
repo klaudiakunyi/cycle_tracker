@@ -43,7 +43,6 @@ export class StatsPage implements OnInit, AfterViewInit {
   ngOnInit() {
     this.authService.isUserLoggedIn().subscribe(user =>{
       this.userId = user.uid;
-      console.log(this.userId);
       this.symptomsService.getSymptomsByUserIdDescendingByDate(this.userId).subscribe(res =>{
         this.symptoms = res;
         this.getfirstBleedingDays();
@@ -67,7 +66,8 @@ export class StatsPage implements OnInit, AfterViewInit {
     this.bleedingLengthCanvas = this.bleedingLength.nativeElement; 
     this.bleedingLengthCtx = this.bleedingLengthCanvas.getContext('2d');
   }
-
+  
+  //ha van a előtte nothing nap, akkor nem teljesen jó
   getfirstBleedingDays(){
     let foundLastDay = false;
     let foundfirstDayOfLastPeriod = false;
@@ -118,7 +118,6 @@ export class StatsPage implements OnInit, AfterViewInit {
     let bleedDate = '';
 
     for(let i = this.symptoms.length - 1 ; i >= 0; i--){
-      //ha van a környékén nothing nap, akkor nem teljesen jó
       if(this.firstBleedingDays.includes(this.symptoms[i].date)){
         bleedingCounter++;
         bleedDate = this.symptoms[i].date;
@@ -135,7 +134,8 @@ export class StatsPage implements OnInit, AfterViewInit {
         }
       }
     }
-    this.bleedingLengthChartUpdate();  }
+    this.bleedingLengthChartUpdate(); 
+  }
 
   cycleLengthChartUpdate(){
     this.cycleChart?.destroy();
@@ -147,7 +147,7 @@ export class StatsPage implements OnInit, AfterViewInit {
           label: 'Ciklus hossza',
           data: this.cycleLengths,
           fill: false,
-          borderColor: '#DBB9EB',
+          borderColor: '#c1d7e0',
           tension: 0.1
         }]
       }
@@ -164,7 +164,7 @@ export class StatsPage implements OnInit, AfterViewInit {
           label: 'Menstruáció hossza',
           data: this.periodLengths,
           fill: false,
-          borderColor: '#82E2EB',
+          borderColor: '#c1a3cf',
           tension: 0.1
         }]
       }

@@ -1,42 +1,43 @@
-button.example-custom-date-class {
-    background: orange;
-    border-radius: 100%;
-  }
+.mat-calendar-body-selected{
+  background-color: var(--ion-color-success);
+  outline-color: var(--ion-color-medium);
+  outline-width: 3px;
+  outline-style: solid;
+}
 
 button.red{
-  background: rgb(248, 175, 205);
+  background: var(--ion-color-secondary);
   border-radius: 100%;
 }
 
 button.blue{
-  background: rgb(153, 193, 247);
+  background: var(--ion-color-primary);
   border-radius: 100%;
 }
 
 button.symptom-log{
-  outline-color: rgb(73, 73, 73);
+  outline-color: var(--ion-color-medium);
   outline-width: 3px;
   outline-style: solid;
   outline-offset: -3px;
-  //background: rgb(202, 202, 202);
   border-radius: 100%;
 }
 
 button.red-symptom-log{
-  outline-color: rgb(73, 73, 73);
+  outline-color: var(--ion-color-medium);
   outline-width: 3px;
   outline-style: solid;
   outline-offset: -3px;
-  background: rgb(248, 175, 205);
+  background: var(--ion-color-secondary);
   border-radius: 100%;
 }
 
 button.blue-symptom-log{
-  outline-color: rgb(73, 73, 73);
+  outline-color: var(--ion-color-medium);
   outline-width: 3px;
   outline-style: solid;
   outline-offset: -3px;
-  background: rgb(153, 193, 247);
+  background: var(--ion-color-primary);
   border-radius: 100%;
 }
 
@@ -48,6 +49,5 @@ button.empty-day{
   outline-color: transparent;
   outline-width: 0px;
   outline-offset: -3px;
-  //background: rgb(202, 202, 202);
   border-radius: 100%;
 }

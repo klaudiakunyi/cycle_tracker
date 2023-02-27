@@ -1,1 +1,22 @@
+ion-tab-button{
+    &[tab="cycle"]{
+        --color: var(--ion-color-danger-shade);
+    }
+    &[tab="calendar"]{
+        --color: var(--ion-color-primary-shade);
+    }
 
+    &[tab="stats"]{
+        --color: var(--ion-color-secondary-shade);
+    }
+    &[tab="settings"]{
+        --color: var(--ion-color-tertiary-shade);
+    }
+    --color-selected: var(--ion-color-medium-contrast);
+}
+
+ion-button{
+    &[tab="add-symptoms"]{
+        --color: var(--ion-color-success-shade);
+    }
+}

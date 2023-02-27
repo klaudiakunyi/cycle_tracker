@@ -46,7 +46,7 @@ export class CyclePage implements OnInit {
       })
     })
   }
-
+  //ha van a környékén nothing nap, akkor nem teljesen jó
   getfirstBleedingDays(){
     let foundLastDay = false;
     let foundfirstDayOfLastPeriod = false;
