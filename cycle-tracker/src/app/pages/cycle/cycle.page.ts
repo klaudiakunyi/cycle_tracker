@@ -52,7 +52,7 @@ export class CyclePage implements OnInit {
     let foundfirstDayOfLastPeriod = false;
     this.firstBleedingDays = [];
     for(let i = 0; i < this.symptoms.length; i++){
-      if(this.symptoms[i].blood !== 'nothing' && foundLastDay === false){
+      if(this.symptoms[i].blood! && this.symptoms[i].blood !== 'nothing' && foundLastDay === false){
         this.lastBleedingDay = this.symptoms[i].date;
         foundLastDay = true;
       }
@@ -61,7 +61,7 @@ export class CyclePage implements OnInit {
       let dateISO = this.symptoms[i].date;
       let dateBeforeISO = dateBefore.toISODate();
       //calculate first bleeding days
-      if(!this.symptoms[i].blood.includes('nothing') && 
+      if(this.symptoms[i].blood! && !this.symptoms[i].blood?.includes('nothing') && 
           ((dateISO === dateBeforeISO && this.symptoms[i+1]?.blood === 'nothing') || 
           this.symptoms[i+1]?.date !== dateBeforeISO)){
         if(!foundfirstDayOfLastPeriod){
