@@ -41,6 +41,8 @@ export class AddSymptomsModalComponent implements OnInit, AfterViewInit {
   painValue = '';
   dateHasLog = false;
   temperature = 0.00;
+  sexualActivity = '';
+  contraceptionUsage = '';
 
   symptomLogDays: number[] = [];
   symptomLogDaysPeriod: number[] = [];
@@ -104,6 +106,12 @@ export class AddSymptomsModalComponent implements OnInit, AfterViewInit {
     if(this.temperature){
       this.selectedSymptoms.temperature = this.temperature;
     }
+    if(this.sexualActivity){
+      this.selectedSymptoms.sexualActivity = this.sexualActivity;
+    }
+    if(this.contraceptionUsage){
+      this.selectedSymptoms.contraceptionUsage;
+    }
     this.selectedSymptoms.userId = this.userId;
     this.selectedSymptoms.id =  this.userId + '_' + this.selectedSymptoms.date;
     this.symptomService.addSymptoms(this.selectedSymptoms).then(()=>{
@@ -151,6 +159,8 @@ export class AddSymptomsModalComponent implements OnInit, AfterViewInit {
         this.mucusValue = res.cervicalMucus;
         this.painValue = res.pain;
         this.temperature = res.temperature;
+        this.sexualActivity = res.sexualActivity;
+        this.contraceptionUsage = res.contraceptionUsage;
         for(let mood of this.moods){
           for(let moodRes of res.mood){
             if(mood.val == moodRes){
@@ -164,6 +174,8 @@ export class AddSymptomsModalComponent implements OnInit, AfterViewInit {
         this.bloodValue = null;
         this.mucusValue = null;
         this.painValue = null;
+        this.sexualActivity = null;
+        this.contraceptionUsage = null;
         for(let mood of this.moods){
           mood.isChecked = false;
         }
