@@ -38,6 +38,7 @@ export class AddSymptomsModalComponent implements OnInit, AfterViewInit {
   userId = '';
   bloodValue = '';
   mucusValue = '';
+  painValue = '';
   dateHasLog = false;
   temperature = 0.00;
 
@@ -100,7 +101,7 @@ export class AddSymptomsModalComponent implements OnInit, AfterViewInit {
     }
 
     this.selectedSymptoms.date = this.selectedDate.toISODate();
-    if(this.temperature > 34 && this.temperature < 42){
+    if(this.temperature){
       this.selectedSymptoms.temperature = this.temperature;
     }
     this.selectedSymptoms.userId = this.userId;
@@ -148,6 +149,7 @@ export class AddSymptomsModalComponent implements OnInit, AfterViewInit {
         this.selectedSymptoms = res;
         this.bloodValue = res.blood;
         this.mucusValue = res.cervicalMucus;
+        this.painValue = res.pain;
         this.temperature = res.temperature;
         for(let mood of this.moods){
           for(let moodRes of res.mood){
@@ -161,6 +163,7 @@ export class AddSymptomsModalComponent implements OnInit, AfterViewInit {
       } else{
         this.bloodValue = null;
         this.mucusValue = null;
+        this.painValue = null;
         for(let mood of this.moods){
           mood.isChecked = false;
         }
@@ -173,6 +176,11 @@ export class AddSymptomsModalComponent implements OnInit, AfterViewInit {
   bloodSegmentChanged($event){
     let blood = $event.detail['value'];
     this.selectedSymptoms.blood = blood;
+  }
+
+  painSegmentChanged($event){
+    let pain = $event.detail['value'];
+    this.selectedSymptoms.pain = pain;
   }
 
   mucusSegmentChanged($event){
