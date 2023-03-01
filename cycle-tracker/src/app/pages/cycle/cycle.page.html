@@ -5,43 +5,68 @@
 </ion-header>
 
 <ion-content>
-  <ion-list>
-    <ion-item>
-      <ion-label>
+  <ion-grid class="ion-padding">
+    <ion-row>
+      <ion-col class="ion-padding">
         Ma: {{ today }}
-      </ion-label>
-    </ion-item>
-    <ion-list-header>
-      <ion-label>Előrejelzés</ion-label>
-    </ion-list-header>
-    <ion-item>
-      <ion-label class="ion-text-wrap">
-        <h3>Következő menstruáció kezdete: </h3>
-        <h4>{{ daysUntilNextPeriod }} nap múlva</h4>
-        <h4>{{ nextCycleStarts }} </h4>
-      </ion-label>
-    </ion-item>
-    <ion-item>
-      <ion-label class="ion-text-wrap">
-        <h3>Következő termékenységi ablak:</h3>
-        <h4> {{ fertileWindowFirstDate }} - {{ fertileWindowLastDate }} </h4>
-      </ion-label>
-    </ion-item>
-    <ion-list-header>
-      <ion-label>Korábbi adatok</ion-label>
-    </ion-list-header>
-    <ion-item>
-      <ion-label class="ion-text-wrap">
-        <h3>Utolsó vérzés első napja:</h3>
-        <h4> {{ lastPeriodFirstbleedingDayMonthAndDay }}</h4>
-      </ion-label>
-    </ion-item>
-    <ion-item>
-      <ion-label class="ion-text-wrap">
-        <h3>Átlagos ciklushossz: </h3>
-        <h4>{{ averageCycleLength | number:'1.0-0' }} nap </h4> 
-      </ion-label>
-    </ion-item>
-  </ion-list>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col class="ion-text-uppercase">
+        <h2>Előrejelzés</h2>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <ion-icon name="water"></ion-icon>
+        Következő menstruáció kezdete: 
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col class="ion-padding-start ion-margin-start">
+        {{ daysUntilNextPeriod }} nap múlva ({{ nextCycleStarts }})
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <ion-icon name="calendar-outline"></ion-icon>
+        Következő termékenységi ablak:
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col class="ion-padding-start ion-margin-start">
+        {{ fertileWindowFirstDate }} - {{ fertileWindowLastDate }}
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+  <ion-grid class="ion-padding">
+    <ion-row>
+      <ion-col class="ion-text-uppercase">
+        <h2>Korábbi adatok</h2>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <ion-icon name="water"></ion-icon>
+        Utolsó vérzés első napja:
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col class="ion-padding-start ion-margin-start">
+        {{ lastPeriodFirstbleedingDayMonthAndDay }}
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <ion-icon name="calendar-outline"></ion-icon>
+        Átlagos ciklushossz:
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col class="ion-padding-start ion-margin-start">
+        {{ averageCycleLength | number:'1.0-0' }} nap 
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 
 </ion-content>
