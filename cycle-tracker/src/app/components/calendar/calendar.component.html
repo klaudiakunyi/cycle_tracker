@@ -1,0 +1,9 @@
+<mat-calendar 
+firstdayofweek="1" 
+[dateClass]="dateClass"
+[(selected)]="selectedDate"
+(selectedChange)="onSelectedDateChange($event)"
+[headerComponent]="calendarHeader"
+[maxDate]="today"
+#matCalendar>
+</mat-calendar>

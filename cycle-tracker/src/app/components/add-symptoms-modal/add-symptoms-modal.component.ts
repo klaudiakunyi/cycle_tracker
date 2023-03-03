@@ -1,14 +1,10 @@
-import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, ViewEncapsulation, Inject, ChangeDetectorRef, ViewChild, AfterViewInit, ElementRef, AfterViewChecked } from '@angular/core';
-import { MatCalendar, MatCalendarCellClassFunction, MatCalendarHeader, MatDateRangePicker } from '@angular/material/datepicker';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { DateTime } from 'luxon';
 import { Symptom } from 'src/app/interfaces/symptom';
 import { SymptomsService } from 'src/app/services/symptoms.service';
-import { DateAdapter, MatDateFormats, MAT_DATE_FORMATS, MAT_DATE_LOCALE} from '@angular/material/core';
 import { AuthService } from 'src/app/services/auth.service';
 import { ToastController } from '@ionic/angular';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-add-symptoms-modal',
@@ -16,18 +12,11 @@ import { takeUntil } from 'rxjs/operators';
   styleUrls: ['./add-symptoms-modal.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
-export class AddSymptomsModalComponent implements OnInit, AfterViewInit {
-  @ViewChild('matCalendar') calendar: MatCalendar<DateTime>;
-  // @ViewChild('calHead') head: MatCalendarHeader<DateTime>;
+export class AddSymptomsModalComponent implements OnInit {
 
-  exampleHeader = ExampleHeader;
-  selectedDate: DateTime | null = DateTime.now();
-  today = DateTime.now();
-  displayedMonth = DateTime.now().month;
-  displayedYear = DateTime.now().year;
+  dateToShow = DateTime.now().setLocale('hu').toLocaleString({ year: 'numeric', month: 'long', day: 'numeric' });
   modalName: string;
-  selectedSymptoms: Symptom = {id: "", userId: "", date: this.selectedDate?.toString(), mood: [] };
-  selectedMoods = [];
+  selectedSymptoms: Symptom = {id: '', userId: '', date: '', mood: [] };
   moods = [
     { val: 'Jó', isChecked: false },
     { val: 'Rossz', isChecked: false },
@@ -44,65 +33,23 @@ export class AddSymptomsModalComponent implements OnInit, AfterViewInit {
   sexualActivity = '';
   contraceptionUsage = '';
 
-  symptomLogDays: number[] = [];
-  symptomLogDaysPeriod: number[] = [];
-
   constructor(private modalCtrl: ModalController, 
               private symptomService: SymptomsService, 
               private authService: AuthService, 
-              public toastController: ToastController,
-              private _dateAdapter: DateAdapter<DateTime>,) {
+              public toastController: ToastController) {
   }
-  
-  ngAfterViewInit(): void {
-  }
-
-  dateClass: MatCalendarCellClassFunction<DateTime> = (cellDate, view) => {
-    // Only highligh dates inside the month view.
-    if (view === 'month') {
-      const date = cellDate.day;
-      // if(date === 1 || date === 20){
-      //   return 'red';
-      // }
-      // if(date === 2){
-      //   return 'blue';
-      // }
-      // if(date === 4){
-      //   return 'symptom-log';
-      // }
-      if(this.symptomLogDaysPeriod.includes(date)){
-        return 'red-symptom-log';
-      }
-      if(date === 4){
-        return 'blue-symptom-log';
-      }
-      if(this.symptomLogDays.includes(date)){
-
-        return 'symptom-log';
-      }
-      //return '';
-    }
-
-    return '';
-  };
 
   cancel() {
     return this.modalCtrl.dismiss(null, 'cancel');
   }
 
-  onStateChange($event){
-    console.log($event);
-  }
-
   confirm() {
-
     for(let mood of this.moods){
       if(mood.isChecked === true){
         this.selectedSymptoms.mood.push(mood.val);
       }
     }
 
-    this.selectedSymptoms.date = this.selectedDate.toISODate();
     if(this.temperature){
       this.selectedSymptoms.temperature = this.temperature;
     }
@@ -110,48 +57,29 @@ export class AddSymptomsModalComponent implements OnInit, AfterViewInit {
       this.selectedSymptoms.sexualActivity = this.sexualActivity;
     }
     if(this.contraceptionUsage){
-      this.selectedSymptoms.contraceptionUsage;
+      this.selectedSymptoms.contraceptionUsage = this.contraceptionUsage;
     }
     this.selectedSymptoms.userId = this.userId;
     this.selectedSymptoms.id =  this.userId + '_' + this.selectedSymptoms.date;
     this.symptomService.addSymptoms(this.selectedSymptoms).then(()=>{
       this.presentToast('Sikeres hozzáadás');
+      return this.modalCtrl.dismiss(this.modalName, 'confirm');
     }).catch(()=>{
       this.presentToast('Sikertelen hozzáadás :(');
+      return this.modalCtrl.dismiss(this.modalName, 'confirm');
     });
-    
-
-    //dismiss az add/update után egyből, async/await-tel, hogy ne záródjon be, amíg hiba nélkül hozzáadtam a tünetet
-    return this.modalCtrl.dismiss(this.modalName, 'confirm');
   }
 
   ngOnInit() {
     this.authService.isUserLoggedIn().subscribe(user =>{
       this.userId = user.uid;
-      let year: string = this.selectedDate.year.toString();
-      let month: string = (this.selectedDate.month < 10)? '0' + this.selectedDate.month.toString() : this.selectedDate.month.toString(); 
-      this.symptomService.getSymptomsByMonthAndId(month , year, this.userId).subscribe((monthSymptoms)=>{
-        for(let daySymptoms of monthSymptoms){
-          let dayFromBE = daySymptoms.date.slice(-2);
-          this.symptomLogDays.push(+dayFromBE);
-          if(daySymptoms.blood! && daySymptoms.blood !== 'nothing'){
-            this.symptomLogDaysPeriod.push(+dayFromBE);
-          }
-        }
-        this.calendar.updateTodaysDate();
-      })
+      let date = DateTime.now().toISODate().toString();
+      let symptomId: string = this.userId + '_' + date;
+      this.onSymptomIdChange(symptomId);
     })
   }
 
-  onSelectedDateChange($event){
-    //"BfNxwL2Df9bpWuxBhm88cPJuqyz1_2023-01-15"
-    let year: string = $event.c.year.toString();
-    let month: string = ($event.c.month < 10)? '0' + $event.c.month.toString() : $event.c.month.toString(); 
-    let day: string = ($event.c.day < 10)? '0' + $event.c.day.toString() : $event.c.day.toString();
-    let symptomId: string = this.userId + '_' + year + '-' + month + '-' + day;
-
-    //NEM JÓ
-
+  onSymptomIdChange(symptomId: string){
     this.symptomService.getSymptomsById(symptomId).subscribe(res =>{
       if (res != null){
         this.selectedSymptoms = res;
@@ -182,7 +110,11 @@ export class AddSymptomsModalComponent implements OnInit, AfterViewInit {
         this.dateHasLog = false;
       }
     })
+  }
 
+  onDateChange(date: string){
+    this.selectedSymptoms.date = date;
+    this.dateToShow = DateTime.fromISO(date).setLocale('hu').toLocaleString({ year: 'numeric', month: 'long', day: 'numeric' });
   }
 
   bloodSegmentChanged($event){
@@ -217,141 +149,3 @@ export class AddSymptomsModalComponent implements OnInit, AfterViewInit {
     toast.present();
   }
 }
-
-
-
-@Component({
-  selector: 'example-header',
-  styles: [`
-    .example-header {
-      display: flex;
-      align-items: center;
-      padding: 0.5em;
-    }
-
-    .example-header-label {
-      flex: 1;
-      height: 1em;
-      font-weight: 500;
-      text-align: center;
-    }
-
-    .example-double-arrow .mat-icon {
-      margin: -22%;
-    }
-  `],
-  template: `
-    <div class="example-header">
-      <button mat-icon-button class="example-double-arrow" (click)="previousClicked('year')">
-      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-double-left" viewBox="0 0 16 16">
-      <path fill-rule="evenodd" d="M8.354 1.646a.5.5 0 0 1 0 .708L2.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/>
-      <path fill-rule="evenodd" d="M12.354 1.646a.5.5 0 0 1 0 .708L6.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/>
-    </svg>
-      </button>
-      <button mat-icon-button (click)="previousClicked('month')">
-      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-left" viewBox="0 0 16 16">
-      <path fill-rule="evenodd" d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/>
-    </svg>
-      </button>
-      <span class="example-header-label">{{periodLabel}}</span>
-      <button mat-icon-button (click)="nextClicked('month')">
-      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-right" viewBox="0 0 16 16">
-      <path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z"/>
-    </svg>
-      </button>
-      <button mat-icon-button class="example-double-arrow" (click)="nextClicked('year')">
-      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-double-right" viewBox="0 0 16 16">
-      <path fill-rule="evenodd" d="M3.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L9.293 8 3.646 2.354a.5.5 0 0 1 0-.708z"/>
-      <path fill-rule="evenodd" d="M7.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L13.293 8 7.646 2.354a.5.5 0 0 1 0-.708z"/>
-    </svg>
-      </button>
-    </div>
-  `,
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  
-})
-
-
-export class ExampleHeader implements OnDestroy, OnInit {
-  private _destroyed = new Subject<void>();
-  symptomLogDays: number[] = [];
-  symptomLogDaysPeriod: number[] = [];
-  userId = '';
-  constructor(
-      private _calendar: MatCalendar<DateTime>, 
-      private _dateAdapter: DateAdapter<DateTime>,
-      @Inject(MAT_DATE_FORMATS) private _dateFormats: MatDateFormats, 
-      cdr: ChangeDetectorRef,
-      private authService: AuthService,
-      private symptomService: SymptomsService) {
-        _calendar.stateChanges.pipe(takeUntil(this._destroyed)).subscribe(() => {
-          cdr.markForCheck();
-          this.refreshSymptomLogDays();
-        });
-  }
-
-  ngOnInit(): void {
-
-    this.authService.isUserLoggedIn().subscribe(user =>{
-      this.userId = user.uid;
-    });
-  }
-
-  ngOnDestroy() {
-    this._destroyed.next();
-    this._destroyed.complete();
-  }
-
-  get periodLabel() {
-    return this._dateAdapter
-        .format(this._calendar.activeDate, this._dateFormats.display.monthYearLabel)
-        .toLocaleUpperCase();
-  }
-
-  previousClicked(mode: 'month' | 'year') {
-    this._calendar.activeDate = mode === 'month' ?
-        this._dateAdapter.addCalendarMonths(this._calendar.activeDate, -1) :
-        this._dateAdapter.addCalendarYears(this._calendar.activeDate, -1);
-    this.refreshSymptomLogDays();
-  }
-
-  nextClicked(mode: 'month' | 'year') {
-    this._calendar.activeDate = mode === 'month' ?
-        this._dateAdapter.addCalendarMonths(this._calendar.activeDate, 1) :
-        this._dateAdapter.addCalendarYears(this._calendar.activeDate, 1);
-    this.refreshSymptomLogDays();
-  }
-
-  refreshSymptomLogDays(){
-    let year: string = this._calendar.activeDate.year.toString();
-    let month: string = (this._calendar.activeDate.month < 10)? '0' + this._calendar.activeDate.month.toString() : this._calendar.activeDate.month.toString();
-    this.symptomLogDays = [];
-    this.symptomLogDaysPeriod = [];
-    this.symptomService.getSymptomsByMonthAndId(month , year, this.userId).subscribe((monthSymptoms)=>{
-      this.symptomLogDays = [];
-      for(let daySymptoms of monthSymptoms){
-        let dayFromBE = daySymptoms.date.slice(-2);
-        this.symptomLogDays.push(+dayFromBE);
-        if(daySymptoms.blood! && daySymptoms.blood !== 'nothing'){
-          this.symptomLogDaysPeriod.push(+dayFromBE);
-        }
-      }
-      this._calendar.dateClass = (cellDate, view) => {
-        if (view === 'month') {
-          const date = cellDate.day;
-          if(this.symptomLogDaysPeriod.includes(date)){
-            return 'red-symptom-log';
-          }
-          if(this.symptomLogDays.includes(date)){
-            return 'symptom-log';
-          }
-          return '';
-        }
-        return '';
-      };
-      this._calendar.updateTodaysDate();
-    })
-  }
-}
-
-

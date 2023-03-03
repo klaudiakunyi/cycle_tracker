@@ -1,5 +1,3 @@
-<ion-content>
-
 <ion-header>
   <ion-toolbar>
     <ion-buttons slot="start">
@@ -13,27 +11,11 @@
 </ion-header>
 
 <ion-content>
-
   <ion-grid>
-      <mat-calendar 
-        firstdayofweek="1" 
-        [dateClass]="dateClass"
-        [(selected)]="selectedDate"
-        (selectedChange)="onSelectedDateChange($event)"
-        [headerComponent]="exampleHeader"
-        [maxDate]="today"
-        #matCalendar>
-        <!-- <mat-calendar-header
-        (click)="onStateChange($event)"
-        (nextClicked)="onStateChange($event)"
-        (previousClicked)="onStateChange($event)"
-        (currentPeriodClicked)="onStateChange($event)" #calHead>
-        </mat-calendar-header> -->
-      </mat-calendar>
-    <!-- </div> -->
+      <app-calendar (symptomId)="onSymptomIdChange($event)" (date)="onDateChange($event)"></app-calendar>
     <ion-card>
       <ion-card-header>
-        <ion-card-title>Dátum: {{ selectedDate.setLocale('hu').toLocaleString({ year: 'numeric', month: 'long', day: 'numeric' }) }}</ion-card-title>
+        <ion-card-title>Dátum: {{ dateToShow }}</ion-card-title>
       </ion-card-header>
       <ion-card-content>
         <ion-button *ngIf="dateHasLog" expand="block" fill="outline" color="danger" (click)="delete()">
