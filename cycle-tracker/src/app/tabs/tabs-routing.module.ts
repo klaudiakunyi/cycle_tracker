@@ -16,10 +16,6 @@ const routes: Routes = [
         loadChildren: () => import('../pages/calendar/calendar.module').then( m => m.CalendarPageModule)
       },
       {
-        path: 'add-symptoms',
-        loadChildren: () => import('../pages/add-symptoms/add-symptoms.module').then( m => m.AddSymptomsPageModule)
-      },
-      {
         path: 'stats',
         loadChildren: () => import('../pages/stats/stats.module').then( m => m.StatsPageModule)
       },

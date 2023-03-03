@@ -15,8 +15,7 @@ ion-tab-button{
     --color-selected: var(--ion-color-medium-contrast);
 }
 
-ion-button{
-    &[tab="add-symptoms"]{
-        --color: var(--ion-color-success-shade);
-    }
+#add{
+    --color: var(--ion-color-success-shade);
 }
+
