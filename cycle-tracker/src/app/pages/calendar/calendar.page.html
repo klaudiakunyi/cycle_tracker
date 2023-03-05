@@ -5,18 +5,78 @@
 </ion-header>
 
 <ion-content>
-      <app-calendar-component></app-calendar-component>
+      <app-calendar-component [maximumDate]="maximumDate" (symptomId)="onSymptomIdChange($event)" (date)="onDateChange($event)"></app-calendar-component>
     <ion-card>
       <ion-card-header>
 
-        <ion-card-title>Dátum: {{ selectedDate }}</ion-card-title>
+        <ion-card-title>Dátum: {{ dateToShow }}</ion-card-title>
       </ion-card-header>
-      <div *ngIf="!dummySymptoms.hasOwnProperty(selectedDate)">
+      <div *ngIf="!dateHasLog">
         <ion-card-content>
           Nincs megjeleníthető adat
         </ion-card-content>
       </div>
-      <div *ngIf="dummySymptoms.hasOwnProperty(selectedDate)">
+      <div *ngIf="dateHasLog">
+        <ion-card-content>
+          <div>          
+            <ion-item *ngIf="this.selectedSymptoms.blood">
+              <ion-label>
+                <ion-icon name="water"></ion-icon>
+                Vérzés: {{ bloodTranslate(selectedSymptoms.blood) }}
+              </ion-label>
+            </ion-item>
+          </div>
+          <div>          
+            <ion-item *ngIf="this.selectedSymptoms.cervicalMucus">
+              <ion-label>
+                <ion-icon name="water-outline"></ion-icon>
+                Méhnyaknyák: {{ mucusTranslate(selectedSymptoms.cervicalMucus) }}
+              </ion-label>
+            </ion-item>
+          </div>
+          <div>          
+            <ion-item *ngIf="this.selectedSymptoms.mood">
+              <ion-label class="ion-text-wrap">
+                <ion-icon name="happy-outline"></ion-icon>
+                Kedv: {{ moodTranslate(selectedSymptoms.mood) }}
+              </ion-label>
+            </ion-item>
+          </div>
+          <div>          
+            <ion-item *ngIf="this.selectedSymptoms.temperature">
+              <ion-label class="ion-text-wrap">
+                <ion-icon name="thermometer-outline"></ion-icon>
+                Hőmérséklet: {{ selectedSymptoms.temperature }} °C
+              </ion-label>
+            </ion-item>
+          </div>
+          <div>          
+            <ion-item *ngIf="this.selectedSymptoms.pain">
+              <ion-label>
+                <ion-icon name="flash-outline"></ion-icon>
+                Fájdalom: {{ bloodTranslate(selectedSymptoms.pain) }}
+              </ion-label>
+            </ion-item>
+          </div>
+          <div>          
+            <ion-item *ngIf="this.selectedSymptoms.sexualActivity">
+              <ion-label>
+                <ion-icon name="heart-outline"></ion-icon>
+                Szexuális tevékenység: {{ selectedSymptoms.sexualActivity }}
+              </ion-label>
+            </ion-item>
+          </div>
+          <div>          
+            <ion-item *ngIf="this.selectedSymptoms.contraceptionUsage">
+              <ion-label>
+                <ion-icon name="heart-circle-outline"></ion-icon>
+                Fogamzásgátlás: {{ selectedSymptoms.contraceptionUsage }}
+              </ion-label>
+            </ion-item>
+          </div>
+        </ion-card-content>
+      </div>
+      <!--<div *ngIf="dummySymptoms.hasOwnProperty(selectedDate)">
         <ion-card-content>
           <ion-item>
             <ion-label>
@@ -37,6 +97,7 @@
             </ion-label>
           </ion-item>
         </ion-card-content>
-      </div>
+      </div> -->
+
     </ion-card>
 </ion-content>

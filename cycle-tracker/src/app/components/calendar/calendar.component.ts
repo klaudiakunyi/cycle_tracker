@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Inject, OnDestroy, OnInit, Output, ViewChild, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Inject, Input, OnDestroy, OnInit, Output, ViewChild, ViewEncapsulation } from '@angular/core';
 import { DateAdapter, MatDateFormats, MAT_DATE_FORMATS } from '@angular/material/core';
 import { MatCalendar, MatCalendarCellClassFunction } from '@angular/material/datepicker';
 import { DateTime } from 'luxon';
@@ -21,7 +21,7 @@ export class CalendarComponent implements OnInit {
   symptomLogDaysPeriod: number[] = [];
   selectedDate: DateTime | null = DateTime.now();
   userId = '';
-  today = DateTime.now();
+  @Input() maximumDate = DateTime.now();
   @Output() symptomId = new EventEmitter<string>();
   @Output() date = new EventEmitter<string>();
   
