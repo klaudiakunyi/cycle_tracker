@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Inject, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Inject, OnDestroy, OnInit, Output, ViewChild, ViewEncapsulation } from '@angular/core';
 import { DateAdapter, MatDateFormats, MAT_DATE_FORMATS } from '@angular/material/core';
 import { MatCalendar, MatCalendarCellClassFunction } from '@angular/material/datepicker';
 import { DateTime } from 'luxon';
@@ -8,9 +8,10 @@ import { AuthService } from 'src/app/services/auth.service';
 import { SymptomsService } from 'src/app/services/symptoms.service';
 
 @Component({
-  selector: 'app-calendar',
+  selector: 'app-calendar-component',
   templateUrl: './calendar.component.html',
   styleUrls: ['./calendar.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class CalendarComponent implements OnInit {
 

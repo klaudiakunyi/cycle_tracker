@@ -26,10 +26,10 @@ import { USE_EMULATOR as USE_AUTH_EMULATOR } from '@angular/fire/compat/auth';
 import { USE_EMULATOR as USE_DATABASE_EMULATOR } from '@angular/fire/compat/database';
 import { USE_EMULATOR as USE_FIRESTORE_EMULATOR } from '@angular/fire/compat/firestore';
 import { USE_EMULATOR as USE_FUNCTIONS_EMULATOR } from '@angular/fire/compat/functions';
-import { CalendarComponent } from './components/calendar/calendar.component';
+import { CalendarModule } from './components/calendar/calendar.module';
 
 @NgModule({
-  declarations: [AppComponent, AddSymptomsModalComponent, CalendarComponent],
+  declarations: [AppComponent, AddSymptomsModalComponent ],
   imports: [BrowserModule, 
     IonicModule.forRoot(), 
     AppRoutingModule,
@@ -44,7 +44,8 @@ import { CalendarComponent } from './components/calendar/calendar.component';
     MatFormFieldModule,
     MatInputModule,
     MatIconModule,
-    MatButtonModule
+    MatButtonModule,
+    CalendarModule
     ],
   providers: [
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
@@ -54,6 +55,6 @@ import { CalendarComponent } from './components/calendar/calendar.component';
     { provide: USE_FIRESTORE_EMULATOR, useValue: environment.useEmulators ? ['http://localhost', 8080] : undefined },
     { provide: USE_FUNCTIONS_EMULATOR, useValue: environment.useEmulators ? ['http://localhost', 5001] : undefined },
   ],
-  bootstrap: [AppComponent],
+  bootstrap: [AppComponent]
 })
 export class AppModule {}
