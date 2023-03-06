@@ -44,23 +44,43 @@ export class AddSymptomsModalComponent implements OnInit {
   }
 
   confirm() {
+  
     for(let mood of this.moods){
-      if(mood.isChecked === true){
-        this.selectedSymptoms.mood.push(mood.val);
+      if(this.selectedSymptoms.mood != null){
+        if(mood.isChecked === true && !this.selectedSymptoms.mood.includes(mood.val)){
+          this.selectedSymptoms.mood.push(mood.val);
+          console.log('push' + mood.val)
+        } else{
+          if(mood.isChecked === false){
+            let index = this.selectedSymptoms.mood.indexOf(mood.val);
+            if (index > -1) {
+              console.log('splice ' + mood.val)
+              this.selectedSymptoms.mood.splice(index, 1);
+            }
+          }
+        }
+      } else{
+        this.selectedSymptoms.mood = [];
+        if(mood.isChecked === true){
+          this.selectedSymptoms.mood.push(mood.val);
+        }
       }
     }
+    console.log(this.selectedSymptoms.mood);
 
-    if(this.temperature){
+    if(this.temperature != null){
       this.selectedSymptoms.temperature = this.temperature;
     }
-    if(this.sexualActivity){
+    if(this.sexualActivity != null){
       this.selectedSymptoms.sexualActivity = this.sexualActivity;
     }
-    if(this.contraceptionUsage){
+    if(this.contraceptionUsage != null){
       this.selectedSymptoms.contraceptionUsage = this.contraceptionUsage;
     }
+
     this.selectedSymptoms.userId = this.userId;
     this.selectedSymptoms.id =  this.userId + '_' + this.selectedSymptoms.date;
+    console.log(this.selectedSymptoms);
     this.symptomService.addSymptoms(this.selectedSymptoms).then(()=>{
       this.presentToast('Sikeres hozzáadás');
       return this.modalCtrl.dismiss(this.modalName, 'confirm');
@@ -83,16 +103,18 @@ export class AddSymptomsModalComponent implements OnInit {
     this.symptomService.getSymptomsById(symptomId).subscribe(res =>{
       if (res != null){
         this.selectedSymptoms = res;
-        this.bloodValue = res.blood;
-        this.mucusValue = res.cervicalMucus;
-        this.painValue = res.pain;
-        this.temperature = res.temperature;
-        this.sexualActivity = res.sexualActivity;
-        this.contraceptionUsage = res.contraceptionUsage;
-        for(let mood of this.moods){
-          for(let moodRes of res.mood){
-            if(mood.val == moodRes){
-              mood.isChecked = true;
+          this.bloodValue = res.blood;
+          this.mucusValue = res.cervicalMucus;
+          this.painValue = res.pain;
+          this.temperature = res.temperature;
+          this.sexualActivity = res.sexualActivity;
+          this.contraceptionUsage = res.contraceptionUsage;
+        if(res.mood){
+          for(let mood of this.moods){
+            for(let moodRes of res.mood){
+              if(mood.val == moodRes){
+                mood.isChecked = true;
+              }
             }
           }
         }
@@ -119,17 +141,24 @@ export class AddSymptomsModalComponent implements OnInit {
 
   bloodSegmentChanged($event){
     let blood = $event.detail['value'];
-    this.selectedSymptoms.blood = blood;
+    console.log("szegmens")
+    if(blood){
+      this.selectedSymptoms.blood = blood;
+    }
   }
 
   painSegmentChanged($event){
     let pain = $event.detail['value'];
-    this.selectedSymptoms.pain = pain;
+    if(pain){
+      this.selectedSymptoms.pain = pain;
+    }
   }
 
   mucusSegmentChanged($event){
     let mucus = $event.detail['value'];
-    this.selectedSymptoms.cervicalMucus = mucus;
+    if(mucus){
+      this.selectedSymptoms.cervicalMucus = mucus;
+    }
   }
 
   delete(){

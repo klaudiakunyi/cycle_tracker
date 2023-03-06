@@ -35,7 +35,7 @@
             </ion-item>
           </div>
           <div>          
-            <ion-item *ngIf="this.selectedSymptoms.mood">
+            <ion-item *ngIf="this.selectedSymptoms.mood && this.selectedSymptoms.mood.length > 0">
               <ion-label class="ion-text-wrap">
                 <ion-icon name="happy-outline"></ion-icon>
                 Kedv: {{ moodTranslate(selectedSymptoms.mood) }}
