@@ -1,8 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Symptom } from '../interfaces/symptom';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
-import { QuerySnapshot } from 'firebase/firestore';
-import { DateTime } from 'luxon';
 
 @Injectable({
   providedIn: 'root'

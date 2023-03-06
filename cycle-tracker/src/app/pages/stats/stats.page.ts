@@ -150,6 +150,11 @@ export class StatsPage implements OnInit, AfterViewInit {
           borderColor: '#c1d7e0',
           tension: 0.1
         }]
+      },
+      options: {
+        layout:{
+          padding: 20
+        }
       }
     });
   }
@@ -167,6 +172,11 @@ export class StatsPage implements OnInit, AfterViewInit {
           borderColor: '#c1a3cf',
           tension: 0.1
         }]
+      },
+      options: {
+        layout:{
+          padding: 20
+        }
       }
     });
   }

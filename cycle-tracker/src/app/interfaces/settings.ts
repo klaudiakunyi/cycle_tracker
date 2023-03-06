@@ -1,11 +1,6 @@
 export interface Settings{
     userId: string,
-    mode: string,
-    notifications: {
-        menstruationPrediction: boolean,
-        ovulationPrediction: boolean
-    }
-    dailySymptoms:{
+    symptoms:{
         temperature: boolean,
         mood: boolean,
         blood: boolean,
@@ -13,6 +8,5 @@ export interface Settings{
         cervicalMucus: boolean,
         contraceptionUsage: boolean,
         sexualActivity: boolean
-    },
-    color: string
+    }
 }
