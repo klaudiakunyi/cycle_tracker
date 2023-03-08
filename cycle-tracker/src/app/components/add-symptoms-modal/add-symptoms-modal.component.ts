@@ -5,6 +5,8 @@ import { Symptom } from 'src/app/interfaces/symptom';
 import { SymptomsService } from 'src/app/services/symptoms.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { ToastController } from '@ionic/angular';
+import { SettingsService } from 'src/app/services/settings.service';
+import { Settings } from 'src/app/interfaces/settings';
 
 @Component({
   selector: 'app-add-symptoms-modal',
@@ -17,6 +19,7 @@ export class AddSymptomsModalComponent implements OnInit {
   dateToShow = DateTime.now().setLocale('hu').toLocaleString({ year: 'numeric', month: 'long', day: 'numeric' });
   modalName: string;
   selectedSymptoms: Symptom = {id: '', userId: '', date: '', mood: [] };
+  settings: Settings;
   moods = [
     { val: 'Jó', isChecked: false },
     { val: 'Rossz', isChecked: false },
@@ -35,7 +38,8 @@ export class AddSymptomsModalComponent implements OnInit {
 
   constructor(private modalCtrl: ModalController, 
               private symptomService: SymptomsService, 
-              private authService: AuthService, 
+              private authService: AuthService,
+              private settingsService: SettingsService,
               public toastController: ToastController) {
   }
 
@@ -96,6 +100,9 @@ export class AddSymptomsModalComponent implements OnInit {
       let date = DateTime.now().toISODate().toString();
       let symptomId: string = this.userId + '_' + date;
       this.onSymptomIdChange(symptomId);
+      this.settingsService.getSettingsById(this.userId).subscribe(settings=>{
+        this.settings = settings;
+      })
     })
   }
 
