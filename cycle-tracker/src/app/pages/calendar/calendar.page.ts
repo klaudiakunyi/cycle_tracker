@@ -1,7 +1,9 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { DateTime } from 'luxon';
+import { Settings } from 'src/app/interfaces/settings';
 import { Symptom } from 'src/app/interfaces/symptom';
 import { AuthService } from 'src/app/services/auth.service';
+import { SettingsService } from 'src/app/services/settings.service';
 import { SymptomsService } from 'src/app/services/symptoms.service';
 
 @Component({
@@ -18,9 +20,11 @@ export class CalendarPage implements OnInit {
   userId = '';
   dateHasLog: boolean;
   blood = '';
+  settings: Settings
 
   constructor(private symptomService: SymptomsService, 
-              private authService: AuthService) { }
+              private authService: AuthService,
+              private settingsService: SettingsService) { }
 
   ngOnInit() {
     this.authService.isUserLoggedIn().subscribe(user =>{
@@ -28,6 +32,9 @@ export class CalendarPage implements OnInit {
       let date = DateTime.now().toISODate().toString();
       let symptomId: string = this.userId + '_' + date;
       this.onSymptomIdChange(symptomId);
+      this.settingsService.getSettingsById(this.userId).subscribe(settings=>{
+        this.settings = settings;
+      })
     })
   }
   
