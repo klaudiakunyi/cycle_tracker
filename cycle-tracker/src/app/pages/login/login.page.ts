@@ -4,6 +4,7 @@ import { EMPTY, observable, Observable } from 'rxjs';
 import { AuthService } from 'src/app/services/auth.service';
 import { of } from 'rxjs';
 import { AlertController } from '@ionic/angular';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -15,7 +16,9 @@ export class LoginPage implements OnInit {
   email = new FormControl('', Validators.required);
   password = new FormControl('', Validators.required);
 
-  constructor(private authService: AuthService, private alertController: AlertController) { }
+  constructor(private authService: AuthService, 
+              private alertController: AlertController,
+              private router: Router) { }
 
   ngOnInit() {
   }
@@ -23,7 +26,7 @@ export class LoginPage implements OnInit {
   logIn(){
     this.authService.login(this.email.value, this.password.value).then(cred =>{
       console.log(cred);
-      
+      this.router.navigateByUrl('cycle');
     }).catch(error => {
       //console.error(error);
       this.presentAlert('Sikertelen bejelentkezés');

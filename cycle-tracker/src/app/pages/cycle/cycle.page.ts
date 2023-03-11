@@ -33,7 +33,6 @@ export class CyclePage implements OnInit {
 
     this.authService.isUserLoggedIn().subscribe(user =>{
       this.userId = user.uid;
-      console.log(this.userId);
       this.symptomsService.getSymptomsByUserIdDescendingByDate(this.userId).subscribe(res =>{
         this.symptoms = res;
         this.getfirstBleedingDays();

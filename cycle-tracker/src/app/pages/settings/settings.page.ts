@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { ToastController } from '@ionic/angular';
 import { Settings } from 'src/app/interfaces/settings';
 import { AuthService } from 'src/app/services/auth.service';
@@ -19,11 +20,13 @@ export class SettingsPage implements OnInit {
   constructor(
     private settingsService: SettingsService, 
     private authService: AuthService,
-    public toastController: ToastController) { }
+    public toastController: ToastController,
+    private router: Router) { }
 
   ngOnInit() {
     this.authService.isUserLoggedIn().subscribe(user =>{
-      this.userId = user.uid;
+      console.log(user);
+      this.userId = user?.uid;
       this.settingsService.getSettingsById(this.userId).subscribe(res=>{
         this.settings = res;
         this.loadFinished = true;
@@ -74,5 +77,11 @@ export class SettingsPage implements OnInit {
       color: 'dark'
     });
     toast.present();
+  }
+
+  logOut(){
+    this.authService.logout().then(()=>{
+      this.router.navigateByUrl('/login');
+    })
   }
 }
