@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ModalController, ToastController } from '@ionic/angular';
+import { ToastController } from '@ionic/angular';
 import { Settings } from 'src/app/interfaces/settings';
 import { AuthService } from 'src/app/services/auth.service';
 import { SettingsService } from 'src/app/services/settings.service';
@@ -19,25 +19,20 @@ export class SettingsPage implements OnInit {
   constructor(
     private settingsService: SettingsService, 
     private authService: AuthService,
-    private modalCtrl: ModalController,
     public toastController: ToastController) { }
 
   ngOnInit() {
-
     this.authService.isUserLoggedIn().subscribe(user =>{
       this.userId = user.uid;
       this.settingsService.getSettingsById(this.userId).subscribe(res=>{
         this.settings = res;
         this.loadFinished = true;
-        console.log(this.settings);
       })
     })
   }
 
   saveSettings(){
-    console.log(this.settings)
     this.settingsService.addSettings(this.settings).then(()=>{
-      this.presentToast('Sikeres mentés');
     }).catch(()=>{
       this.presentToast('Sikertelen mentés :(');
     });
@@ -45,24 +40,31 @@ export class SettingsPage implements OnInit {
   
   bloodChanged($event){
     this.settings.symptoms.blood = $event.detail.checked;
+    this.saveSettings();
   }
   temperatureChanged($event){
     this.settings.symptoms.temperature = $event.detail.checked;
+    this.saveSettings();
   }
   mucusChanged($event){
     this.settings.symptoms.cervicalMucus = $event.detail.checked;
+    this.saveSettings();
   }
   moodChanged($event){
     this.settings.symptoms.mood = $event.detail.checked;
+    this.saveSettings();
   }
   painChanged($event){
     this.settings.symptoms.pain = $event.detail.checked;
+    this.saveSettings();
   }
   sexualActivityChanged($event){
     this.settings.symptoms.sexualActivity = $event.detail.checked;
+    this.saveSettings();
   }
   contraceptionUsageChanged($event){
     this.settings.symptoms.contraceptionUsage = $event.detail.checked;
+    this.saveSettings();
   }
 
   async presentToast(message: string) {
