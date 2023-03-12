@@ -12,7 +12,16 @@ import { SettingsService } from 'src/app/services/settings.service';
 })
 export class SettingsPage implements OnInit {
   userId = '';
-  settings: Settings;
+  settings: Settings = { userId: '', symptoms: { temperature: false, mood: false, blood: false, cervicalMucus: false, sexualActivity: false, pain: false, contraceptionUsage: false}};
+  
+  temperature = false;
+  mood =  false;
+  blood = false;
+  cervicalMucus =  false;
+  sexualActivity = false;
+  pain = false;
+  contraceptionUsage = false;
+
   loadFinished = false;
   modalName: string;
 
@@ -29,6 +38,15 @@ export class SettingsPage implements OnInit {
       this.userId = user?.uid;
       this.settingsService.getSettingsById(this.userId).subscribe(res=>{
         this.settings = res;
+        
+        this.temperature = this.settings.symptoms.temperature;
+        this.mood = this.settings.symptoms.mood;
+        this.blood = this.settings.symptoms.blood;
+        this.cervicalMucus = this.settings.symptoms.cervicalMucus;
+        this.contraceptionUsage = this.settings.symptoms.contraceptionUsage;
+        this.pain = this.settings.symptoms.pain;
+        this.sexualActivity = this.settings.symptoms.sexualActivity;
+
         this.loadFinished = true;
       })
     })
