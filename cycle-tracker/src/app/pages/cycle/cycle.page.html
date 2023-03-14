@@ -22,11 +22,27 @@
         Következő menstruáció kezdete: 
       </ion-col>
     </ion-row>
-    <ion-row>
-      <ion-col class="ion-padding-start ion-margin-start">
-        {{ daysUntilNextPeriod }} nap múlva ({{ nextCycleStarts }})
-      </ion-col>
-    </ion-row>
+    <div *ngIf="daysUntilNextPeriod > 0">
+      <ion-row>
+        <ion-col class="ion-padding-start ion-margin-start">
+          {{ daysUntilNextPeriod }} nap múlva ({{ nextCycleStarts }})
+        </ion-col>
+      </ion-row>
+    </div>
+    <div *ngIf="daysUntilNextPeriod == 0">
+      <ion-row>
+        <ion-col class="ion-padding-start ion-margin-start">
+          {{ daysUntilNextPeriod }} nap múlva ({{ nextCycleStarts }}) (ma)
+        </ion-col>
+      </ion-row>
+    </div>
+    <div *ngIf="daysUntilNextPeriod < 0">
+      <ion-row>
+        <ion-col class="ion-padding-start ion-margin-start">
+          {{ daysUntilNextPeriod*-1 }} nap késés ({{ nextCycleStarts }} kezdeti dátumhoz képest)
+        </ion-col>
+      </ion-row>
+    </div>
     <ion-row>
       <ion-col>
         <ion-icon name="calendar-outline"></ion-icon>
