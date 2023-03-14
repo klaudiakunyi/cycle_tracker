@@ -4,6 +4,7 @@ import { MatCalendar, MatCalendarCellClassFunction } from '@angular/material/dat
 import { DateTime } from 'luxon';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { Symptom } from 'src/app/interfaces/symptom';
 import { AuthService } from 'src/app/services/auth.service';
 import { SymptomsService } from 'src/app/services/symptoms.service';
 
@@ -19,11 +20,22 @@ export class CalendarComponent implements OnInit {
   calendarHeader = CalendarHeader;
   symptomLogDays: number[] = [];
   symptomLogDaysPeriod: number[] = [];
+  futurePeriodDays: string[] = [];
+  futureOvulationDays: number[] = [];
   selectedDate: DateTime | null = DateTime.now();
   userId = '';
   @Input() maximumDate = DateTime.now();
   @Output() symptomId = new EventEmitter<string>();
   @Output() date = new EventEmitter<string>();
+
+  firstBleedingDays = [];
+  symptoms: Symptom[] = [];
+  lastBleedingDay: string;
+  lastPeriodsFirstBleedingDay: string;
+  lastPeriodFirstbleedingDayMonthAndDay: string;
+  diffsInDays = 0;
+  averageCycleLength = 0;
+
   
   constructor(private symptomService: SymptomsService, 
     private authService: AuthService) { }
@@ -41,37 +53,48 @@ export class CalendarComponent implements OnInit {
             this.symptomLogDaysPeriod.push(+dayFromBE);
           }
         }
-        this.calendar.updateTodaysDate();
       })
+      this.getfirstBleedingDays();
     })
   }
 
   dateClass: MatCalendarCellClassFunction<DateTime> = (cellDate, view) => {
     if (view === 'month') {
       const date = cellDate.day;
-      // if(date === 1 || date === 20){
-      //   return 'red';
-      // }
-      // if(date === 2){
-      //   return 'blue';
-      // }
-      // if(date === 4){
-      //   return 'symptom-log';
-      // }
+      console.log(cellDate)
       if(this.symptomLogDaysPeriod.includes(date)){
         return 'red-symptom-log';
       }
-      if(date === 4){
-        return 'blue-symptom-log';
+      if(this.futureOvulationDays.includes(date)){
+        return 'blue';
+      }
+      if(this.futurePeriodDays.includes(cellDate.toISODate())){
+        return 'red';
       }
       if(this.symptomLogDays.includes(date)){
-
         return 'symptom-log';
       }
     }
-
     return '';
   };
+
+  getfirstBleedingDays(){
+    this.symptomService.getSymptomsByUserIdDescendingByDate(this.userId).subscribe(res =>{
+      this.symptoms = res;
+      this.firstBleedingDays = this.symptomService.getFirstBleedingDays(this.symptoms);
+      this.lastPeriodsFirstBleedingDay = this.symptomService.lastPeriodsFirstBleedingDay;
+      console.log(this.firstBleedingDays);
+      this.averageCycleLength = this.symptomService.getAverageCycleLength(this.firstBleedingDays);
+      this.calculateFutureFirstBleedingDays();
+    })
+  }
+
+  calculateFutureFirstBleedingDays(){
+    let bleedingLengths = this.symptomService.getBleedingLengths(this.symptoms, this.firstBleedingDays);
+    let averageBleedingLength = this.symptomService.getAveragePeriodLength(bleedingLengths);
+    this.futurePeriodDays = this.symptomService.calculateFutureFirstBleedingDays(this.averageCycleLength, averageBleedingLength);
+    this.calendar.updateTodaysDate();
+  }
 
   onSelectedDateChange($event){
     //"BfNxwL2Df9bpWuxBhm88cPJuqyz1_2023-01-15"
@@ -82,9 +105,7 @@ export class CalendarComponent implements OnInit {
     let symptomId: string = this.userId + '_' + date;
     this.symptomId.emit(symptomId);
     this.date.emit(date);
-
   }
-
 
 }
 
@@ -144,6 +165,11 @@ export class CalendarHeader implements OnDestroy, OnInit {
   private _destroyed = new Subject<void>();
   symptomLogDays: number[] = [];
   symptomLogDaysPeriod: number[] = [];
+  futurePeriodDays: string[] = [];
+  futureOvulationDays: string[] = [];
+  averageCycleLength = 0;
+  firstBleedingDays = [];
+  symptoms: Symptom[];
   userId = '';
   constructor(
       private _calendar: MatCalendar<DateTime>, 
@@ -159,10 +185,17 @@ export class CalendarHeader implements OnDestroy, OnInit {
   }
 
   ngOnInit(): void {
-
     this.authService.isUserLoggedIn().subscribe(user =>{
       this.userId = user.uid;
-    });
+      this.symptomService.getSymptomsByUserIdDescendingByDate(this.userId).subscribe(res =>{
+        this.symptoms = res;
+        this.firstBleedingDays = this.symptomService.getFirstBleedingDays(this.symptoms);
+        this.averageCycleLength = this.symptomService.getAverageCycleLength(this.firstBleedingDays);
+        let bleedingLengths = this.symptomService.getBleedingLengths(this.symptoms, this.firstBleedingDays);
+        let averageBleedingLength = this.symptomService.getAveragePeriodLength(bleedingLengths);
+        this.futurePeriodDays = this.symptomService.calculateFutureFirstBleedingDays(this.averageCycleLength, averageBleedingLength);
+      });
+    })
   }
 
   ngOnDestroy() {
@@ -210,14 +243,19 @@ export class CalendarHeader implements OnDestroy, OnInit {
           if(this.symptomLogDaysPeriod.includes(date)){
             return 'red-symptom-log';
           }
+          if(this.futureOvulationDays.includes(cellDate.toISODate())){
+            return 'blue';
+          }
+          if(this.futurePeriodDays.includes(cellDate.toISODate())){
+            return 'red';
+          }
           if(this.symptomLogDays.includes(date)){
             return 'symptom-log';
           }
-          return '';
         }
-        return '';
       };
       this._calendar.updateTodaysDate();
     })
   }
+
 }

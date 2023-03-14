@@ -109,4 +109,32 @@ export class SymptomsService {
     }
     return periodLengths;
   }
+
+  getAveragePeriodLength(periodLengths: number[]){
+    let counter = 0;
+    for(let periodLength of periodLengths){
+      counter += periodLength;
+    }
+    return counter/periodLengths.length;
+  }
+
+  calculateFutureFirstBleedingDays(averageCycleLength: number, averageBleedingLength: number){
+    let futureBleedingDays: string[] = [];
+    let lastPeriodsFirstBleedingDay = DateTime.fromISO(this.lastPeriodsFirstBleedingDay);
+    let nextPeriodStarts = lastPeriodsFirstBleedingDay.plus({ days: averageCycleLength });
+
+    let dateToIncrement = nextPeriodStarts;
+    let averageBleedingLengthVar = averageBleedingLength;
+    while( dateToIncrement < nextPeriodStarts.plus({ years: 1})){
+      if(averageBleedingLengthVar < 1){
+        averageBleedingLengthVar = averageBleedingLength;
+        dateToIncrement = dateToIncrement.plus({days:averageCycleLength-averageBleedingLength});
+      } else{
+        futureBleedingDays.push(dateToIncrement.toISODate());
+        dateToIncrement = dateToIncrement.plus({days:1});
+        averageBleedingLengthVar -= 1;
+      }
+    }
+    return futureBleedingDays;
+  }
 } 
