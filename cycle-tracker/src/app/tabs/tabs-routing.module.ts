@@ -7,6 +7,7 @@ const routes: Routes = [
   {
     path: '',
     component: TabsPage,
+    canActivate: [ AuthGuard ],
     children: [
       {
         path: 'cycle',
