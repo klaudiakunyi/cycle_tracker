@@ -43,10 +43,11 @@ export class SymptomsService {
       let dateBefore = date.minus({days: 1});
       let dateISO = symptoms[i].date;
       let dateBeforeISO = dateBefore.toISODate();
-      //calculate first bleeding days
-      if(symptoms[i].blood! && !symptoms[i].blood?.includes('nothing') && 
-          ((dateISO === dateBeforeISO && symptoms[i+1]?.blood === 'nothing') || 
-          symptoms[i+1]?.date !== dateBeforeISO)){
+      let dayHasBlood = symptoms[i].blood!;
+      let dayHasBloodIsNotNothing = !symptoms[i].blood?.includes('nothing');
+      let dateBeforeBloodIsNothing = (dateISO === dateBeforeISO && symptoms[i+1]?.blood === 'nothing');
+      let DateBeforeBloodDoesntHaveSymptoms = symptoms[i+1]?.date !== dateBeforeISO;
+      if( dayHasBlood && dayHasBloodIsNotNothing &&  ( dateBeforeBloodIsNothing || DateBeforeBloodDoesntHaveSymptoms)){
         if(!foundfirstDayOfLastPeriod){
           this.lastPeriodsFirstBleedingDay = symptoms[i].date;
           foundfirstDayOfLastPeriod = true;
