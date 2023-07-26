@@ -49,9 +49,7 @@ export class SignupPage implements OnInit {
       this.presentAlert('A regisztráció mező adatait kötelező helyesen kitölteni.');
     }
     else if(this.signUpForm.valid){
-      console.log(this.signUpForm.value);
       this.authService.signup(this.signUpForm.get('email')?.value, this.signUpForm.get('password')?.value).then(cred =>{
-        console.log(cred);
         this.userService.addUser({
           id: cred.user?.uid as string,
           email: this.signUpForm.get('email')?.value,
@@ -71,7 +69,6 @@ export class SignupPage implements OnInit {
         })
         this.router.navigate(['/login']);
       }).catch(error =>{
-        //console.error(error);
         this.presentAlert('Sikertelen regisztráció!');
       })
     }
