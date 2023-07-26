@@ -25,7 +25,7 @@ export class CyclePage implements OnInit {
   fertileWindowLastDate = '';
   fertilityBeforeNextPeriod = 14;
   daysUntilNextPeriod: number;
-  hasTwoLogs = false;
+  hasMoreThanOneMenstruation = false;
 
   constructor(private symptomsService: SymptomsService, private authService: AuthService, private modalCtrl: ModalController) {
   }
@@ -49,9 +49,7 @@ export class CyclePage implements OnInit {
           this.fertileWindowLastDate = fertileWindowLastDate.setLocale('hu').toLocaleString({ month: 'long', day: 'numeric' });
           let fertileWindowsFirstDate = fertileWindowLastDate.minus({ days: 3});
           this.fertileWindowFirstDate = fertileWindowsFirstDate.setLocale('hu').toLocaleString({ month: 'long', day: 'numeric' });
-          if(this.symptoms.length > 1){
-            this.hasTwoLogs = true;
-          }
+
         } 
       })
     })
@@ -65,6 +63,11 @@ export class CyclePage implements OnInit {
 
   getAverageCycleLength(){
     this.averageCycleLength = this.symptomsService.getAverageCycleLength(this.firstBleedingDays);
+    if(this.averageCycleLength < 1){
+      this.hasMoreThanOneMenstruation = false;
+    } else{
+      this.hasMoreThanOneMenstruation = true;
+    }
   }
 
   async openModal() {

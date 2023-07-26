@@ -4,7 +4,7 @@
   </ion-toolbar>
 </ion-header>
 <ion-content>
-  <div *ngIf="hasTwoLogs;else oneOrLessLogs">
+  <div *ngIf="hasMoreThanOneMenstruation;else oneOrLessLogs">
     <ion-grid class="ion-padding">
       <ion-row>
         <ion-col class="ion-padding">
@@ -89,10 +89,10 @@
     <ion-grid>
       <ion-row class="ion-align-self-center">
         <ion-col class="ion-text-center">
-          <h2>Jegyezz be tüneteket kezdésnek</h2>
+          <h2>Jegyezz be legalább két menstruációt az előrejelzés megtekintéséhez</h2>
           <ion-button id="add"  (click)="openModal()">
             <ion-icon name="add"></ion-icon>
-            Új tünet hozzáadása
+            Új bejegyzés hozzáadása
           </ion-button>
         </ion-col>
       </ion-row>
