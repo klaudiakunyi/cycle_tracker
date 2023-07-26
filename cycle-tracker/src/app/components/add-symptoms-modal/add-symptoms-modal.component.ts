@@ -18,7 +18,7 @@ export class AddSymptomsModalComponent implements OnInit {
 
   dateToShow = DateTime.now().setLocale('hu').toLocaleString({ year: 'numeric', month: 'long', day: 'numeric' });
   modalName: string;
-  selectedSymptoms: Symptom = {id: '', userId: '', date: '', mood: [] };
+  selectedSymptoms: Symptom = {id: '', userId: '', date: DateTime.now().toISODate().toString(), mood: [] };
   settings: Settings;
   moods = [
     { val: 'Jó', isChecked: false },

@@ -22,7 +22,7 @@ export class CalendarComponent implements OnInit {
   symptomLogDaysPeriod: number[] = [];
   futurePeriodDays: string[] = [];
   futureOvulationDays: number[] = [];
-  selectedDate: DateTime = DateTime.now();
+  selectedDate = DateTime.now();
   userId = '';
   @Input() maximumDate = DateTime.now();
   @Output() symptomId = new EventEmitter<string>();
