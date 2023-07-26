@@ -5,6 +5,8 @@ import { User } from 'src/app/interfaces/user';
 import { AuthService } from 'src/app/services/auth.service';
 import { AlertController } from '@ionic/angular';
 import { UserService } from 'src/app/services/user.service';
+import { SettingsService } from 'src/app/services/settings.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-signup',
@@ -18,12 +20,14 @@ export class SignupPage implements OnInit {
     password: new FormControl('', Validators.required),
     rePassword: new FormControl('', Validators.required),
     name: new FormControl('', Validators.required),
-    weight: new FormControl()
   });
 
-  birthDate = "";
-
-  constructor(private authService: AuthService, private location: Location, private alertController: AlertController, private userService: UserService) { }
+  constructor(private authService: AuthService, 
+              private location: Location, 
+              private alertController: AlertController, 
+              private userService: UserService,
+              private settingsService: SettingsService,
+              private router: Router ) { }
 
   ngOnInit() {
   }
@@ -41,8 +45,6 @@ export class SignupPage implements OnInit {
   onSubmit(){
     if(this.signUpForm.get('password').value !== this.signUpForm.get('rePassword').value){
       this.presentAlert('A Jelszó és Jelszó újra mezők nem egyeznek');
-    } else if(!this.birthDate){
-      this.presentAlert('A születési dátumot kötelező megadni.');
     } else if(!this.signUpForm.valid){
       this.presentAlert('A regisztráció mező adatait kötelező helyesen kitölteni.');
     }
@@ -54,9 +56,20 @@ export class SignupPage implements OnInit {
           id: cred.user?.uid as string,
           email: this.signUpForm.get('email')?.value,
           name: this.signUpForm.get('name')?.value,
-          birthDate: this.birthDate,
-          weight: this.signUpForm.get('weight')?.value
         })
+        this.settingsService.addSettings({
+          userId: cred.user?.uid as string,
+          symptoms:{
+              temperature: true,
+              mood: true,
+              blood: true,
+              pain: true,
+              cervicalMucus: true,
+              contraceptionUsage: true,
+              sexualActivity: true
+          }
+        })
+        this.router.navigate(['/login']);
       }).catch(error =>{
         //console.error(error);
         this.presentAlert('Sikertelen regisztráció!');
@@ -64,10 +77,7 @@ export class SignupPage implements OnInit {
     }
   }
 
-  onDateChange($event){
-    let changedDate = $event.detail.value.split("T")[0]
-    this.birthDate = changedDate; 
-  }
+
 
   goBack(){
     this.location.back();

@@ -53,12 +53,10 @@ export class AddSymptomsModalComponent implements OnInit {
       if(this.selectedSymptoms.mood != null){
         if(mood.isChecked === true && !this.selectedSymptoms.mood.includes(mood.val)){
           this.selectedSymptoms.mood.push(mood.val);
-          console.log('push' + mood.val)
         } else{
           if(mood.isChecked === false){
             let index = this.selectedSymptoms.mood.indexOf(mood.val);
             if (index > -1) {
-              console.log('splice ' + mood.val)
               this.selectedSymptoms.mood.splice(index, 1);
             }
           }
@@ -70,7 +68,6 @@ export class AddSymptomsModalComponent implements OnInit {
         }
       }
     }
-    console.log(this.selectedSymptoms.mood);
 
     if(this.temperature != null){
       this.selectedSymptoms.temperature = this.temperature;
@@ -84,7 +81,6 @@ export class AddSymptomsModalComponent implements OnInit {
 
     this.selectedSymptoms.userId = this.userId;
     this.selectedSymptoms.id =  this.userId + '_' + this.selectedSymptoms.date;
-    console.log(this.selectedSymptoms);
     this.symptomService.addSymptoms(this.selectedSymptoms).then(()=>{
       this.presentToast('Sikeres hozzáadás');
       return this.modalCtrl.dismiss(this.modalName, 'confirm');
@@ -148,7 +144,6 @@ export class AddSymptomsModalComponent implements OnInit {
 
   bloodSegmentChanged($event){
     let blood = $event.detail['value'];
-    console.log("szegmens")
     if(blood){
       this.selectedSymptoms.blood = blood;
     }

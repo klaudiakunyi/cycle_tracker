@@ -23,6 +23,7 @@ export class CyclePage implements OnInit {
   fertileWindowLastDate = '';
   fertilityBeforeNextPeriod = 14;
   daysUntilNextPeriod: number;
+  hasTwoLogs = false;
 
   constructor(private symptomsService: SymptomsService, private authService: AuthService) {
   }
@@ -33,18 +34,23 @@ export class CyclePage implements OnInit {
       this.userId = user.uid;
       this.symptomsService.getSymptomsByUserIdDescendingByDate(this.userId).subscribe(res =>{
         this.symptoms = res;
-        this.getfirstBleedingDays();
-        this.getAverageCycleLength();
+        if(this.symptoms !== null){
+          this.getfirstBleedingDays();
+          this.getAverageCycleLength();
 
-        let nextCycleStartsDate = DateTime.fromISO(this.lastPeriodsFirstBleedingDay).plus({days: this.averageCycleLength})
-        
-        this.nextCycleStarts = nextCycleStartsDate.setLocale('hu').toLocaleString({ month: 'long', day: 'numeric' });
-        let fertileWindowLastDate = nextCycleStartsDate.minus({ days: this.fertilityBeforeNextPeriod});
-        this.daysUntilNextPeriod = Math.round(nextCycleStartsDate.diff(DateTime.now(), 'days').as('days'));
+          let nextCycleStartsDate = DateTime.fromISO(this.lastPeriodsFirstBleedingDay).plus({days: this.averageCycleLength})
+          
+          this.nextCycleStarts = nextCycleStartsDate.setLocale('hu').toLocaleString({ month: 'long', day: 'numeric' });
+          let fertileWindowLastDate = nextCycleStartsDate.minus({ days: this.fertilityBeforeNextPeriod});
+          this.daysUntilNextPeriod = Math.round(nextCycleStartsDate.diff(DateTime.now(), 'days').as('days'));
 
-        this.fertileWindowLastDate = fertileWindowLastDate.setLocale('hu').toLocaleString({ month: 'long', day: 'numeric' });
-        let fertileWindowsFirstDate = fertileWindowLastDate.minus({ days: 3});
-        this.fertileWindowFirstDate = fertileWindowsFirstDate.setLocale('hu').toLocaleString({ month: 'long', day: 'numeric' });
+          this.fertileWindowLastDate = fertileWindowLastDate.setLocale('hu').toLocaleString({ month: 'long', day: 'numeric' });
+          let fertileWindowsFirstDate = fertileWindowLastDate.minus({ days: 3});
+          this.fertileWindowFirstDate = fertileWindowsFirstDate.setLocale('hu').toLocaleString({ month: 'long', day: 'numeric' });
+          if(this.symptoms.length > 1){
+            this.hasTwoLogs = true;
+          }
+        } 
       })
     })
   }

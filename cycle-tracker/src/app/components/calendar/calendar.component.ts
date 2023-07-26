@@ -22,7 +22,7 @@ export class CalendarComponent implements OnInit {
   symptomLogDaysPeriod: number[] = [];
   futurePeriodDays: string[] = [];
   futureOvulationDays: number[] = [];
-  selectedDate: DateTime | null = DateTime.now();
+  selectedDate: DateTime = DateTime.now();
   userId = '';
   @Input() maximumDate = DateTime.now();
   @Output() symptomId = new EventEmitter<string>();
@@ -61,7 +61,6 @@ export class CalendarComponent implements OnInit {
   dateClass: MatCalendarCellClassFunction<DateTime> = (cellDate, view) => {
     if (view === 'month') {
       const date = cellDate.day;
-      console.log(cellDate)
       if(this.symptomLogDaysPeriod.includes(date)){
         return 'red-symptom-log';
       }
@@ -83,7 +82,6 @@ export class CalendarComponent implements OnInit {
       this.symptoms = res;
       this.firstBleedingDays = this.symptomService.getFirstBleedingDays(this.symptoms);
       this.lastPeriodsFirstBleedingDay = this.symptomService.lastPeriodsFirstBleedingDay;
-      console.log(this.firstBleedingDays);
       this.averageCycleLength = this.symptomService.getAverageCycleLength(this.firstBleedingDays);
       this.calculateFutureFirstBleedingDays();
     })

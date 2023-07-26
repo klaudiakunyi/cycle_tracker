@@ -3,86 +3,91 @@
     <ion-title>Ciklus</ion-title>
   </ion-toolbar>
 </ion-header>
-
 <ion-content>
-  <ion-grid class="ion-padding">
-    <ion-row>
-      <ion-col class="ion-padding">
-        Ma: {{ today }}
-      </ion-col>
-    </ion-row>
-    <ion-row>
-      <ion-col class="ion-text-uppercase">
-        <h2>Előrejelzés</h2>
-      </ion-col>
-    </ion-row>
-    <ion-row>
-      <ion-col>
-        <ion-icon name="water"></ion-icon>
-        Következő menstruáció kezdete: 
-      </ion-col>
-    </ion-row>
-    <div *ngIf="daysUntilNextPeriod > 0">
+  <div *ngIf="hasTwoLogs;else oneOrLessLogs">
+    <ion-grid class="ion-padding">
       <ion-row>
-        <ion-col class="ion-padding-start ion-margin-start">
-          {{ daysUntilNextPeriod }} nap múlva ({{ nextCycleStarts }})
+        <ion-col class="ion-padding">
+          Ma: {{ today }}
         </ion-col>
       </ion-row>
-    </div>
-    <div *ngIf="daysUntilNextPeriod == 0">
       <ion-row>
-        <ion-col class="ion-padding-start ion-margin-start">
-          {{ daysUntilNextPeriod }} nap múlva ({{ nextCycleStarts }}) (ma)
+        <ion-col class="ion-text-uppercase">
+          <h2>Előrejelzés</h2>
         </ion-col>
       </ion-row>
-    </div>
-    <div *ngIf="daysUntilNextPeriod < 0">
       <ion-row>
-        <ion-col class="ion-padding-start ion-margin-start">
-          {{ daysUntilNextPeriod*-1 }} nap késés ({{ nextCycleStarts }} kezdeti dátumhoz képest)
+        <ion-col>
+          <ion-icon name="water"></ion-icon>
+          Következő menstruáció kezdete: 
         </ion-col>
       </ion-row>
+      <div *ngIf="daysUntilNextPeriod > 0">
+        <ion-row>
+          <ion-col class="ion-padding-start ion-margin-start">
+            {{ daysUntilNextPeriod }} nap múlva ({{ nextCycleStarts }})
+          </ion-col>
+        </ion-row>
+      </div>
+      <div *ngIf="daysUntilNextPeriod == 0">
+        <ion-row>
+          <ion-col class="ion-padding-start ion-margin-start">
+            {{ daysUntilNextPeriod }} nap múlva ({{ nextCycleStarts }}) (ma)
+          </ion-col>
+        </ion-row>
+      </div>
+      <div *ngIf="daysUntilNextPeriod < 0">
+        <ion-row>
+          <ion-col class="ion-padding-start ion-margin-start">
+            {{ daysUntilNextPeriod*-1 }} nap késés ({{ nextCycleStarts }} kezdeti dátumhoz képest)
+          </ion-col>
+        </ion-row>
+      </div>
+      <ion-row>
+        <ion-col>
+          <ion-icon name="calendar-outline"></ion-icon>
+          Következő termékenységi ablak:
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col class="ion-padding-start ion-margin-start">
+          {{ fertileWindowFirstDate }} - {{ fertileWindowLastDate }}
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+    <ion-grid class="ion-padding">
+      <ion-row>
+        <ion-col class="ion-text-uppercase">
+          <h2>Korábbi adatok</h2>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>
+          <ion-icon name="water"></ion-icon>
+          Utolsó vérzés első napja:
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col class="ion-padding-start ion-margin-start">
+          {{ lastPeriodFirstbleedingDayMonthAndDay }}
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>
+          <ion-icon name="calendar-outline"></ion-icon>
+          Átlagos ciklushossz:
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col class="ion-padding-start ion-margin-start">
+          {{ averageCycleLength | number:'1.0-0' }} nap 
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </div>
+  <ng-template #oneOrLessLogs>
+    <div>
+      <h2>Nincs megjeleníthető adat, szükséges legalább két ciklus bejegyzése</h2>
     </div>
-    <ion-row>
-      <ion-col>
-        <ion-icon name="calendar-outline"></ion-icon>
-        Következő termékenységi ablak:
-      </ion-col>
-    </ion-row>
-    <ion-row>
-      <ion-col class="ion-padding-start ion-margin-start">
-        {{ fertileWindowFirstDate }} - {{ fertileWindowLastDate }}
-      </ion-col>
-    </ion-row>
-  </ion-grid>
-  <ion-grid class="ion-padding">
-    <ion-row>
-      <ion-col class="ion-text-uppercase">
-        <h2>Korábbi adatok</h2>
-      </ion-col>
-    </ion-row>
-    <ion-row>
-      <ion-col>
-        <ion-icon name="water"></ion-icon>
-        Utolsó vérzés első napja:
-      </ion-col>
-    </ion-row>
-    <ion-row>
-      <ion-col class="ion-padding-start ion-margin-start">
-        {{ lastPeriodFirstbleedingDayMonthAndDay }}
-      </ion-col>
-    </ion-row>
-    <ion-row>
-      <ion-col>
-        <ion-icon name="calendar-outline"></ion-icon>
-        Átlagos ciklushossz:
-      </ion-col>
-    </ion-row>
-    <ion-row>
-      <ion-col class="ion-padding-start ion-margin-start">
-        {{ averageCycleLength | number:'1.0-0' }} nap 
-      </ion-col>
-    </ion-row>
-  </ion-grid>
-
+  </ng-template>
 </ion-content>

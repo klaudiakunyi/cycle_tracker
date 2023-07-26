@@ -123,9 +123,11 @@ export class SymptomsService {
     let futureBleedingDays: string[] = [];
     let lastPeriodsFirstBleedingDay = DateTime.fromISO(this.lastPeriodsFirstBleedingDay);
     let nextPeriodStarts = lastPeriodsFirstBleedingDay.plus({ days: averageCycleLength });
-
     let dateToIncrement = nextPeriodStarts;
     let averageBleedingLengthVar = averageBleedingLength;
+    if(averageCycleLength < 1){
+      return [DateTime.now().plus({ days: 1 }).toISODate()];
+    }
     while( dateToIncrement < nextPeriodStarts.plus({ years: 1})){
       if(averageBleedingLengthVar < 1){
         averageBleedingLengthVar = averageBleedingLength;
