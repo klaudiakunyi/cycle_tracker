@@ -44,7 +44,6 @@ export class CalendarPage implements OnInit {
       if (res != null){
         this.selectedSymptoms = res;
         this.dateHasLog = true;
-        console.log(res);
       } else{
         this.dateHasLog = false;
       }

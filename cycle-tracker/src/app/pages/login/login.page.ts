@@ -25,10 +25,8 @@ export class LoginPage implements OnInit {
 
   logIn(){
     this.authService.login(this.email.value, this.password.value).then(cred =>{
-      console.log(cred);
       this.router.navigateByUrl('cycle');
     }).catch(error => {
-      //console.error(error);
       this.presentAlert('Sikertelen bejelentkezés');
       return EMPTY;
     });

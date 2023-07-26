@@ -34,7 +34,6 @@ export class SettingsPage implements OnInit {
 
   ngOnInit() {
     this.authService.isUserLoggedIn().subscribe(user =>{
-      console.log(user);
       this.userId = user?.uid;
       this.settingsService.getSettingsById(this.userId).subscribe(res=>{
         this.settings = res;
