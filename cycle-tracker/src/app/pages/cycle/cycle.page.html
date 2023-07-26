@@ -86,8 +86,16 @@
     </ion-grid>
   </div>
   <ng-template #oneOrLessLogs>
-    <div>
-      <h2>Nincs megjeleníthető adat, szükséges legalább két ciklus bejegyzése</h2>
-    </div>
+    <ion-grid>
+      <ion-row class="ion-align-self-center">
+        <ion-col class="ion-text-center">
+          <h2>Jegyezz be tüneteket kezdésnek</h2>
+          <ion-button id="add"  (click)="openModal()">
+            <ion-icon name="add"></ion-icon>
+            Új tünet hozzáadása
+          </ion-button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
   </ng-template>
 </ion-content>

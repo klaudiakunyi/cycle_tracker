@@ -1,5 +1,7 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { ModalController } from '@ionic/angular';
 import { DateTime } from 'luxon';
+import { AddSymptomsModalComponent } from 'src/app/components/add-symptoms-modal/add-symptoms-modal.component';
 import { Symptom } from 'src/app/interfaces/symptom';
 import { AuthService } from 'src/app/services/auth.service';
 import { SymptomsService } from 'src/app/services/symptoms.service';
@@ -25,7 +27,7 @@ export class CyclePage implements OnInit {
   daysUntilNextPeriod: number;
   hasTwoLogs = false;
 
-  constructor(private symptomsService: SymptomsService, private authService: AuthService) {
+  constructor(private symptomsService: SymptomsService, private authService: AuthService, private modalCtrl: ModalController) {
   }
   
   ngOnInit(): void {
@@ -63,5 +65,15 @@ export class CyclePage implements OnInit {
 
   getAverageCycleLength(){
     this.averageCycleLength = this.symptomsService.getAverageCycleLength(this.firstBleedingDays);
+  }
+
+  async openModal() {
+    const modal = await this.modalCtrl.create({
+      component: AddSymptomsModalComponent,
+    });
+    modal.present();
+
+    const { data, role } = await modal.onWillDismiss();
+
   }
 }
