@@ -13,8 +13,8 @@ import { Router } from '@angular/router';
 })
 export class LoginPage implements OnInit {
 
-  email = new FormControl('', Validators.required);
-  password = new FormControl('', Validators.required);
+  email = new FormControl('test@test.com', Validators.required);
+  password = new FormControl('testing', Validators.required);
 
   constructor(private authService: AuthService, 
               private alertController: AlertController,
