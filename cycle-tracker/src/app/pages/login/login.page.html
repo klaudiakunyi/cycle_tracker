@@ -15,8 +15,32 @@
     <ion-input type="password" [formControl]="password"></ion-input>
     <ion-note slot="error">Required field</ion-note>
   </ion-item>
-  <div class="ion-text-center">
+  <div class="ion-text-center ion-margin">
     <ion-button (click)="logIn()">Sign in</ion-button>
     <ion-button routerLink="/signup">Sign up</ion-button>
   </div>
+
+  <ion-card color="success">
+    <ion-card-header>
+      <ion-card-title>Info</ion-card-title>
+    </ion-card-header>
+  
+    <ion-card-content> 
+      Test account email and password already filled in:
+      <br>
+      'test@test.com'
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card color="danger">
+    <ion-card-header>
+      <ion-card-title>Warning</ion-card-title>
+    </ion-card-header>
+  
+    <ion-card-content> 
+      This is a demo version of the application.
+      <br>
+      Do not enter any sensitive data.
+    </ion-card-content>
+  </ion-card>
 </ion-content>
