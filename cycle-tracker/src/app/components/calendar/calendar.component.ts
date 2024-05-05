@@ -95,7 +95,6 @@ export class CalendarComponent implements OnInit {
   }
 
   onSelectedDateChange($event){
-    //"BfNxwL2Df9bpWuxBhm88cPJuqyz1_2023-01-15"
     let year: string = $event.c.year.toString();
     let month: string = ($event.c.month < 10)? '0' + $event.c.month.toString() : $event.c.month.toString(); 
     let day: string = ($event.c.day < 10)? '0' + $event.c.day.toString() : $event.c.day.toString();

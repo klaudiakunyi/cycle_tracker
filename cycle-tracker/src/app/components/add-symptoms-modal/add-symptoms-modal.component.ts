@@ -16,16 +16,16 @@ import { Settings } from 'src/app/interfaces/settings';
 })
 export class AddSymptomsModalComponent implements OnInit {
 
-  dateToShow = DateTime.now().setLocale('hu').toLocaleString({ year: 'numeric', month: 'long', day: 'numeric' });
+  dateToShow = DateTime.now().setLocale('en').toLocaleString({ year: 'numeric', month: 'long', day: 'numeric' });
   modalName: string;
   selectedSymptoms: Symptom = {id: '', userId: '', date: DateTime.now().toISODate().toString(), mood: [] };
   settings: Settings;
   moods = [
-    { val: 'Jó', isChecked: false },
-    { val: 'Rossz', isChecked: false },
-    { val: 'Ideges', isChecked: false },
-    { val: 'Nyugodt', isChecked: false },
-    { val: 'Boldog', isChecked: false }
+    { val: 'Good', isChecked: false },
+    { val: 'Bad', isChecked: false },
+    { val: 'Anxious', isChecked: false },
+    { val: 'Calm', isChecked: false },
+    { val: 'Happy', isChecked: false }
   ];
   userId = '';
   bloodValue = '';
@@ -82,10 +82,10 @@ export class AddSymptomsModalComponent implements OnInit {
     this.selectedSymptoms.userId = this.userId;
     this.selectedSymptoms.id =  this.userId + '_' + this.selectedSymptoms.date;
     this.symptomService.addSymptoms(this.selectedSymptoms).then(()=>{
-      this.presentToast('Sikeres hozzáadás');
+      this.presentToast('Symptom successfully added');
       return this.modalCtrl.dismiss(this.modalName, 'confirm');
     }).catch(()=>{
-      this.presentToast('Sikertelen hozzáadás :(');
+      this.presentToast('Failed to add symptoms :(');
       return this.modalCtrl.dismiss(this.modalName, 'confirm');
     });
   }
@@ -139,7 +139,7 @@ export class AddSymptomsModalComponent implements OnInit {
 
   onDateChange(date: string){
     this.selectedSymptoms.date = date;
-    this.dateToShow = DateTime.fromISO(date).setLocale('hu').toLocaleString({ year: 'numeric', month: 'long', day: 'numeric' });
+    this.dateToShow = DateTime.fromISO(date).setLocale('en').toLocaleString({ year: 'numeric', month: 'long', day: 'numeric' });
   }
 
   bloodSegmentChanged($event){
@@ -165,9 +165,9 @@ export class AddSymptomsModalComponent implements OnInit {
 
   delete(){
     this.symptomService.deleteSymptoms(this.selectedSymptoms.id).then(()=>{
-      this.presentToast('Sikeres törlés.')
+      this.presentToast('Deletion succesful')
     }).catch(()=>{
-      this.presentToast('Sikertelen törlés. :(')
+      this.presentToast('Deletion failed :(')
     })
   }
 

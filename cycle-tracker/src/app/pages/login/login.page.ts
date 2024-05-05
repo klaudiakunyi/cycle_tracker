@@ -27,14 +27,14 @@ export class LoginPage implements OnInit {
     this.authService.login(this.email.value, this.password.value).then(cred =>{
       this.router.navigateByUrl('cycle');
     }).catch(error => {
-      this.presentAlert('Sikertelen bejelentkezés');
+      this.presentAlert('Incorrect email address and / or password');
       return EMPTY;
     });
   }
 
   async presentAlert(message: string) {
     const alert = await this.alertController.create({
-      header: 'Figyelmeztetés',
+      header: 'Warning',
       message: message,
       buttons: ['OK'],
     });

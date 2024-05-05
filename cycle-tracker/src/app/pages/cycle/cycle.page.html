@@ -1,6 +1,6 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>Ciklus</ion-title>
+    <ion-title>Cycle</ion-title>
   </ion-toolbar>
 </ion-header>
 <ion-content>
@@ -8,45 +8,45 @@
     <ion-grid class="ion-padding">
       <ion-row>
         <ion-col class="ion-padding">
-          Ma: {{ today }}
+          Today: {{ today }}
         </ion-col>
       </ion-row>
       <ion-row>
         <ion-col class="ion-text-uppercase">
-          <h2>Előrejelzés</h2>
+          <h2>Predictions</h2>
         </ion-col>
       </ion-row>
       <ion-row>
         <ion-col>
           <ion-icon name="water"></ion-icon>
-          Következő menstruáció kezdete: 
+          Start of next period: 
         </ion-col>
       </ion-row>
       <div *ngIf="daysUntilNextPeriod > 0">
         <ion-row>
           <ion-col class="ion-padding-start ion-margin-start">
-            {{ daysUntilNextPeriod }} nap múlva ({{ nextCycleStarts }})
+            In {{ daysUntilNextPeriod }} day(s)   ({{ nextCycleStarts }})
           </ion-col>
         </ion-row>
       </div>
       <div *ngIf="daysUntilNextPeriod == 0">
         <ion-row>
           <ion-col class="ion-padding-start ion-margin-start">
-            {{ daysUntilNextPeriod }} nap múlva ({{ nextCycleStarts }}) (ma)
+            In {{ daysUntilNextPeriod }} day(s) ({{ nextCycleStarts }}) (Today)
           </ion-col>
         </ion-row>
       </div>
       <div *ngIf="daysUntilNextPeriod < 0">
         <ion-row>
           <ion-col class="ion-padding-start ion-margin-start">
-            {{ daysUntilNextPeriod*-1 }} nap késés ({{ nextCycleStarts }} kezdeti dátumhoz képest)
+            {{ daysUntilNextPeriod*-1 }} days late from predicted ({{ nextCycleStarts }} starting date)
           </ion-col>
         </ion-row>
       </div>
       <ion-row>
         <ion-col>
           <ion-icon name="calendar-outline"></ion-icon>
-          Következő termékenységi ablak:
+          Next fertility window:
         </ion-col>
       </ion-row>
       <ion-row>
@@ -58,13 +58,13 @@
     <ion-grid class="ion-padding">
       <ion-row>
         <ion-col class="ion-text-uppercase">
-          <h2>Korábbi adatok</h2>
+          <h2>Previous data</h2>
         </ion-col>
       </ion-row>
       <ion-row>
         <ion-col>
           <ion-icon name="water"></ion-icon>
-          Utolsó vérzés első napja:
+          First day of last period:
         </ion-col>
       </ion-row>
       <ion-row>
@@ -75,12 +75,12 @@
       <ion-row>
         <ion-col>
           <ion-icon name="calendar-outline"></ion-icon>
-          Átlagos ciklushossz:
+          Average length of cycle:
         </ion-col>
       </ion-row>
       <ion-row>
         <ion-col class="ion-padding-start ion-margin-start">
-          {{ averageCycleLength | number:'1.0-0' }} nap 
+          {{ averageCycleLength | number:'1.0-0' }} days 
         </ion-col>
       </ion-row>
     </ion-grid>
@@ -89,10 +89,10 @@
     <ion-grid>
       <ion-row class="ion-align-self-center">
         <ion-col class="ion-text-center">
-          <h2>Jegyezz be legalább két menstruációt az előrejelzés megtekintéséhez</h2>
+          <h2>Please log at least 2 periods to see predictions</h2>
           <ion-button id="add"  (click)="openModal()">
             <ion-icon name="add"></ion-icon>
-            Új bejegyzés hozzáadása
+            Log periods/symptoms
           </ion-button>
         </ion-col>
       </ion-row>

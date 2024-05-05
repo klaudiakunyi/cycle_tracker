@@ -1,22 +1,22 @@
-<ion-header>
+<ion-header class="ion-margin-bottom">
   <ion-toolbar>
-    <ion-title>Bejelentkezés</ion-title>
+    <ion-title>Sign in</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content class="ion-align-items-center">
   <ion-item>
-    <ion-label position="floating">E-mail cím</ion-label>
+    <ion-label position="floating">E-mail</ion-label>
     <ion-input type="email" [formControl]="email"></ion-input>
-    <ion-note slot="error">Kötelező mező.</ion-note>
+    <ion-note slot="error">Required field</ion-note>
   </ion-item>
   <ion-item>
-    <ion-label position="floating">Jelszó</ion-label>
+    <ion-label position="floating">Password</ion-label>
     <ion-input type="password" [formControl]="password"></ion-input>
-    <ion-note slot="error">Kötelező mező.</ion-note>
+    <ion-note slot="error">Required field</ion-note>
   </ion-item>
   <div class="ion-text-center">
-    <ion-button (click)="logIn()">Bejelentkezés</ion-button>
-    <ion-button routerLink="/signup">Regisztráció</ion-button>
+    <ion-button (click)="logIn()">Sign in</ion-button>
+    <ion-button routerLink="/signup">Sign up</ion-button>
   </div>
 </ion-content>

@@ -1,60 +1,60 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>Beállítások</ion-title>
+    <ion-title>Settings</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
   <ion-list class="ion-padding">
     <ion-list-header class="ion-padding-vertical">
-      <ion-label>Tünet hozzáadása</ion-label>
+      <ion-label>Select the symptoms you want to show/add in the calendar</ion-label>
     </ion-list-header>
     <ion-item>
       <ion-label>
         <ion-icon name="water"></ion-icon>
-        Vérzés erőssége
+        Strength of bleeding
       </ion-label>
       <ion-toggle color="success" slot="end" [checked]="blood" (ionChange)="bloodChanged($event)"></ion-toggle>
     </ion-item>
     <ion-item >
       <ion-label>
         <ion-icon name="thermometer-outline"></ion-icon>
-        Hőmérséklet
+        Temperature
       </ion-label>
       <ion-toggle color="success" slot="end" [checked]="temperature" (ionChange)="temperatureChanged($event)"></ion-toggle>
     </ion-item>
     <ion-item>
       <ion-label>
         <ion-icon name="water-outline"></ion-icon>
-        Méhnyaknyák állaga
+        Consistency of cervical mucus
       </ion-label>
       <ion-toggle color="success" slot="end" [checked]="cervicalMucus" (ionChange)="mucusChanged($event)"></ion-toggle>
     </ion-item>
     <ion-item>
       <ion-label>
         <ion-icon name="happy-outline"></ion-icon>
-        Kedv
+        Mood
       </ion-label>
       <ion-toggle color="success" slot="end" [checked]="mood" (ionChange)="moodChanged($event)"></ion-toggle>
     </ion-item>
     <ion-item>
       <ion-label>
         <ion-icon name="flash-outline"></ion-icon>
-        Fájdalom
+        Pain
       </ion-label>
       <ion-toggle color="success" slot="end" [checked]="pain" (ionChange)="painChanged($event)"></ion-toggle>
     </ion-item>
     <ion-item>
       <ion-label>
         <ion-icon name="heart-outline"></ion-icon>
-        Szexuális tevékenység
+        Sexual activity
       </ion-label>
       <ion-toggle color="success" slot="end" [checked]="sexualActivity" (ionChange)="sexualActivityChanged($event)"></ion-toggle>
     </ion-item>
     <ion-item>
       <ion-label>
         <ion-icon name="heart-circle-outline"></ion-icon>
-        Fogamzásgátlás
+        Contraception
       </ion-label>
       <ion-toggle color="success" slot="end" [checked]="contraceptionUsage" (ionChange)="contraceptionUsageChanged($event)"></ion-toggle>
     </ion-item>
@@ -62,7 +62,7 @@
 </ion-content>
 <ion-footer class="ion-margin-bottom">
   <ion-button class="ion-margin ion-margin-bottom" expand="block" fill="outline" color="danger" (click)="logOut()">
-    Kijelentkezés
+    Log out
     <ion-icon name="log-out-outline" slot="end"></ion-icon>
   </ion-button>
 </ion-footer>

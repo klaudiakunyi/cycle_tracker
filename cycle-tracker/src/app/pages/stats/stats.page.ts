@@ -59,7 +59,7 @@ export class StatsPage implements OnInit, AfterViewInit {
       data: {
         labels: this.cycleLengths.reverse(),
         datasets: [{
-          label: 'Ciklus hossza',
+          label: 'Length of cycle',
           data: this.cycleLengths,
           fill: false,
           borderColor: '#c1d7e0',
@@ -81,7 +81,7 @@ export class StatsPage implements OnInit, AfterViewInit {
       data: {
         labels: this.periodLengths,
         datasets: [{
-          label: 'Menstruáció hossza',
+          label: 'Length of period',
           data: this.periodLengths,
           fill: false,
           borderColor: '#c1a3cf',

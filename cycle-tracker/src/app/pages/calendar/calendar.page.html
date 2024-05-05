@@ -1,6 +1,6 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>Naptár</ion-title>
+    <ion-title>Calendar</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -9,11 +9,11 @@
     <ion-card>
       <ion-card-header>
 
-        <ion-card-title>Dátum: {{ dateToShow }}</ion-card-title>
+        <ion-card-title>Date: {{ dateToShow }}</ion-card-title>
       </ion-card-header>
       <div *ngIf="!dateHasLog">
         <ion-card-content>
-          Nincs megjeleníthető adat
+          There is no data to display
         </ion-card-content>
       </div>
       <div *ngIf="dateHasLog">
@@ -22,7 +22,7 @@
             <ion-item *ngIf="this.selectedSymptoms.blood && this.settings?.symptoms.blood">
               <ion-label>
                 <ion-icon name="water"></ion-icon>
-                Vérzés: {{ bloodTranslate(selectedSymptoms.blood) }}
+                Bleeding: {{ bloodTranslate(selectedSymptoms.blood) }}
               </ion-label>
             </ion-item>
           </div>
@@ -30,7 +30,7 @@
             <ion-item *ngIf="this.selectedSymptoms.cervicalMucus && this.settings?.symptoms.cervicalMucus">
               <ion-label>
                 <ion-icon name="water-outline"></ion-icon>
-                Méhnyaknyák: {{ mucusTranslate(selectedSymptoms.cervicalMucus) }}
+                Cervical mucus: {{ mucusTranslate(selectedSymptoms.cervicalMucus) }}
               </ion-label>
             </ion-item>
           </div>
@@ -38,7 +38,7 @@
             <ion-item *ngIf="this.selectedSymptoms.mood && this.selectedSymptoms.mood.length > 0 && this.settings?.symptoms.mood">
               <ion-label class="ion-text-wrap">
                 <ion-icon name="happy-outline"></ion-icon>
-                Kedv: {{ moodTranslate(selectedSymptoms.mood) }}
+                Mood: {{ moodTranslate(selectedSymptoms.mood) }}
               </ion-label>
             </ion-item>
           </div>
@@ -46,7 +46,7 @@
             <ion-item *ngIf="this.selectedSymptoms.temperature && this.settings?.symptoms.temperature">
               <ion-label class="ion-text-wrap">
                 <ion-icon name="thermometer-outline"></ion-icon>
-                Hőmérséklet: {{ selectedSymptoms.temperature }} °C
+                Temperature: {{ selectedSymptoms.temperature }} °C
               </ion-label>
             </ion-item>
           </div>
@@ -54,7 +54,7 @@
             <ion-item *ngIf="this.selectedSymptoms.pain && this.settings?.symptoms.pain">
               <ion-label>
                 <ion-icon name="flash-outline"></ion-icon>
-                Fájdalom: {{ bloodTranslate(selectedSymptoms.pain) }}
+                Pain: {{ bloodTranslate(selectedSymptoms.pain) }}
               </ion-label>
             </ion-item>
           </div>
@@ -62,7 +62,7 @@
             <ion-item *ngIf="this.selectedSymptoms.sexualActivity && this.settings?.symptoms.sexualActivity">
               <ion-label>
                 <ion-icon name="heart-outline"></ion-icon>
-                Szexuális tevékenység: {{ selectedSymptoms.sexualActivity }}
+                Sexual activity: {{ selectedSymptoms.sexualActivity }}
               </ion-label>
             </ion-item>
           </div>
@@ -70,7 +70,7 @@
             <ion-item *ngIf="this.selectedSymptoms.contraceptionUsage && this.settings?.symptoms.contraceptionUsage">
               <ion-label>
                 <ion-icon name="heart-circle-outline"></ion-icon>
-                Fogamzásgátlás: {{ selectedSymptoms.contraceptionUsage }}
+                Contraception: {{ selectedSymptoms.contraceptionUsage }}
               </ion-label>
             </ion-item>
           </div>

@@ -18,7 +18,7 @@ export class CyclePage implements OnInit {
   lastPeriodsFirstBleedingDay: string;
   lastPeriodFirstbleedingDayMonthAndDay: string;
   firstBleedingDays: string[] = [];
-  today = DateTime.now().setLocale('hu').toLocaleString({ month: 'long', day: 'numeric' });
+  today = DateTime.now().setLocale('en').toLocaleString({ month: 'long', day: 'numeric' });
   averageCycleLength = 0;
   nextCycleStarts = '';
   fertileWindowFirstDate = '';
@@ -42,13 +42,13 @@ export class CyclePage implements OnInit {
 
           let nextCycleStartsDate = DateTime.fromISO(this.lastPeriodsFirstBleedingDay).plus({days: this.averageCycleLength})
           
-          this.nextCycleStarts = nextCycleStartsDate.setLocale('hu').toLocaleString({ month: 'long', day: 'numeric' });
+          this.nextCycleStarts = nextCycleStartsDate.setLocale('en').toLocaleString({ month: 'long', day: 'numeric' });
           let fertileWindowLastDate = nextCycleStartsDate.minus({ days: this.fertilityBeforeNextPeriod});
           this.daysUntilNextPeriod = Math.round(nextCycleStartsDate.diff(DateTime.now(), 'days').as('days'));
 
-          this.fertileWindowLastDate = fertileWindowLastDate.setLocale('hu').toLocaleString({ month: 'long', day: 'numeric' });
+          this.fertileWindowLastDate = fertileWindowLastDate.setLocale('en').toLocaleString({ month: 'long', day: 'numeric' });
           let fertileWindowsFirstDate = fertileWindowLastDate.minus({ days: 3});
-          this.fertileWindowFirstDate = fertileWindowsFirstDate.setLocale('hu').toLocaleString({ month: 'long', day: 'numeric' });
+          this.fertileWindowFirstDate = fertileWindowsFirstDate.setLocale('en').toLocaleString({ month: 'long', day: 'numeric' });
 
         } 
       })
@@ -58,7 +58,7 @@ export class CyclePage implements OnInit {
   getfirstBleedingDays(){
     this.firstBleedingDays = this.symptomsService.getFirstBleedingDays(this.symptoms);
     this.lastPeriodsFirstBleedingDay = this.symptomsService.lastPeriodsFirstBleedingDay;
-    this.lastPeriodFirstbleedingDayMonthAndDay = DateTime.fromISO(this.lastPeriodsFirstBleedingDay).setLocale('hu').toLocaleString({ month: 'long', day: 'numeric' });
+    this.lastPeriodFirstbleedingDayMonthAndDay = DateTime.fromISO(this.lastPeriodsFirstBleedingDay).setLocale('en').toLocaleString({ month: 'long', day: 'numeric' });
   }
 
   getAverageCycleLength(){

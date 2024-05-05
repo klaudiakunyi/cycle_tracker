@@ -34,7 +34,7 @@ export class SignupPage implements OnInit {
 
   async presentAlert(message: string) {
     const alert = await this.alertController.create({
-      header: 'Figyelmeztetés',
+      header: 'Warning',
       message: message,
       buttons: ['OK'],
     });
@@ -44,9 +44,9 @@ export class SignupPage implements OnInit {
 
   onSubmit(){
     if(this.signUpForm.get('password').value !== this.signUpForm.get('rePassword').value){
-      this.presentAlert('A Jelszó és Jelszó újra mezők nem egyeznek');
+      this.presentAlert('The Password and Password again fields do not match');
     } else if(!this.signUpForm.valid){
-      this.presentAlert('A regisztráció mező adatait kötelező helyesen kitölteni.');
+      this.presentAlert('The registration form must be filled out correctly');
     }
     else if(this.signUpForm.valid){
       this.authService.signup(this.signUpForm.get('email')?.value, this.signUpForm.get('password')?.value).then(cred =>{
@@ -69,7 +69,7 @@ export class SignupPage implements OnInit {
         })
         this.router.navigate(['/login']);
       }).catch(error =>{
-        this.presentAlert('Sikertelen regisztráció!');
+        this.presentAlert('The registration was not successful');
       })
     }
   }

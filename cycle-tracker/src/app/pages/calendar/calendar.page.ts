@@ -16,7 +16,7 @@ export class CalendarPage implements OnInit {
 
   maximumDate = DateTime.now().plus({years: 5});
   selectedSymptoms: Symptom = {id: '', userId: '', date: '', mood: [] };
-  dateToShow = DateTime.now().setLocale('hu').toLocaleString({ year: 'numeric', month: 'long', day: 'numeric' });
+  dateToShow = DateTime.now().setLocale('en').toLocaleString({ year: 'numeric', month: 'long', day: 'numeric' });
   userId = '';
   dateHasLog: boolean;
   blood = '';
@@ -52,32 +52,32 @@ export class CalendarPage implements OnInit {
 
   onDateChange(date: string){
     this.selectedSymptoms.date = date;
-    this.dateToShow = DateTime.fromISO(date).setLocale('hu').toLocaleString({ year: 'numeric', month: 'long', day: 'numeric' });
+    this.dateToShow = DateTime.fromISO(date).setLocale('en').toLocaleString({ year: 'numeric', month: 'long', day: 'numeric' });
   }
 
   bloodTranslate(blood: string){
     switch(blood){
       case 'nothing':
-          return 'Nincs';
+          return 'None';
       case 'light':
-        return 'Gyenge'
+        return 'Light'
       case 'medium':
-        return 'Közepes'
+        return 'Medium'
       case 'heavy':
-        return 'Erős'
+        return 'Strong'
     }
   }
 
   mucusTranslate(mucus: string){
     switch(mucus){
       case 'dry':
-        return 'Száraz'
+        return 'Dry'
       case 'wet':
-        return 'Nyirkos';
+        return 'Damp';
       case 'slimy':
-        return 'Ragacsos';
+        return 'Sticky';
       case 'transparent':
-        return 'Átlátszó';
+        return 'Transparent';
     }
   }
 
