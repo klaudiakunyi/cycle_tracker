@@ -25,7 +25,7 @@ export class CyclePage implements OnInit {
   fertileWindowLastDate = '';
   fertilityBeforeNextPeriod = 14;
   daysUntilNextPeriod: number;
-  hasMoreThanOneMenstruation = false;
+  hasMoreThanTwoMenstruation = false;
 
   constructor(private symptomsService: SymptomsService, private authService: AuthService, private modalCtrl: ModalController) {
   }
@@ -63,10 +63,11 @@ export class CyclePage implements OnInit {
 
   getAverageCycleLength(){
     this.averageCycleLength = this.symptomsService.getAverageCycleLength(this.firstBleedingDays);
-    if(this.averageCycleLength < 1){
-      this.hasMoreThanOneMenstruation = false;
+    console.log(this.averageCycleLength)
+    if(this.averageCycleLength != this.averageCycleLength || this.averageCycleLength < 2){
+      this.hasMoreThanTwoMenstruation = false;
     } else{
-      this.hasMoreThanOneMenstruation = true;
+      this.hasMoreThanTwoMenstruation = true;
     }
   }
 
